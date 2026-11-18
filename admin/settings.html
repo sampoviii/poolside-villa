@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+
+<body class="admin-page">
+    <!-- Admin settings include resort details, payment information, and account controls. -->
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+                <div>
+                    <div class="admin-brand-sub" id="adminPanelLabel">Admin Panel</div>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+    <a href="dashboard.html"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+    <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+    <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+    <a href="reservation-history.html"><span class="material-icons nav-icon">list_alt</span> Reservation History</a>
+    <a href="reports.html"><span class="material-icons nav-icon">assessment</span> Reports</a>
+    <a href="reviews.html"><span class="material-icons nav-icon">star</span> Customer Reviews</a>
+    <a href="user-management.html"><span class="material-icons nav-icon">group</span> User Management</a>
+    <a href="audit-logs.html"><span class="material-icons nav-icon">history</span> Audit Logs</a>
+    <a href="settings.html"><span class="material-icons nav-icon">settings</span> Settings</a>
+</nav>
+
+            <div class="admin-nav-bottom">
+                <button type="button" id="adminLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+                <h1>Settings</h1>
+                <div class="admin-who">Signed in as <b id="adminNameLabel">Admin</b></div>
+            </div>
+
+            <div class="admin-body" style="max-width:720px; margin:0 auto;">
+
+                <!-- ===== GCash payment details (shown to customers) ===== -->
+                <form class="admin-card" id="gcashForm">
+                    <h2><span class="material-icons heading-icon">payment</span> GCash Payment Details</h2>
+                    <p class="card-note">
+                        This GCash number and QR code appear on the customer's booking page.
+                    </p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="gcashNumberInput">GCash Number</label>
+                        <input type="tel" id="gcashNumberInput" class="form-input" placeholder="09171234567" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="gcashQrInput">GCash QR Code (image)</label>
+                        <input type="file" id="gcashQrInput" class="form-input" accept="image/jpeg,image/png,image/webp" />
+                        <span class="form-hint">Upload a photo/screenshot of your GCash QR. Image only, under 5 MB.</span>
+                    </div>
+
+                    <div id="gcashQrPreviewWrap" style="margin-bottom:14px; display:none;">
+                        <div class="form-label">Current QR</div>
+                        <img id="gcashQrPreview" alt="GCash QR preview"
+                             style="width:160px; height:160px; object-fit:contain; border:1px solid var(--cream-line); border-radius:var(--radius); background:#fff;" />
+                    </div>
+
+                    <button type="submit" class="btn btn-sky btn-lg">Save Payment Details</button>
+
+                    <!-- Success message shown below the button after saving -->
+                    <div id="gcashSavedNotice" style="
+                        display: none;
+                        margin-top: 14px;
+                        padding: 10px 14px;
+                        background: var(--sky-light);
+                        border-left: 4px solid var(--sky);
+                        border-radius: var(--radius);
+                        font-size: 13px;
+                        color: var(--sky-darker);
+                        line-height: 1.6;
+                    ">
+                        <span class="heading-icon" style="color:var(--sky-darker);">check_circle</span> GCash payment details saved successfully. Customers can now see them on the booking page.
+                    </div>
+                </form>
+
+                <!-- ===== Password ===== -->
+                <form class="admin-card" id="passwordForm" style="margin-top:20px;">
+                    <h2><span class="material-icons heading-icon">lock</span> Change Password</h2>
+                    <p class="card-note">Enter your current password to save a new one.</p>
+
+                    <div class="form-group">
+                        <label class="form-label" for="currentPassword">Current Password <span class="required">*</span></label>
+                        <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password" required />
+                    </div>
+
+                    <hr class="sep" />
+
+                    <div class="form-group">
+                        <label class="form-label" for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" class="form-input" placeholder="At least 8 characters with uppercase, lowercase, number, and symbol" required />
+                        <span class="form-hint" id="adminPwHint"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Re-enter new password" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-sky btn-lg">Save Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- These shared helpers validate forms and manage passwords before admin settings load. -->
+    <script src="../assets/js/password-toggle.js"></script>
+    <script src="../assets/js/live-validation.js"></script>
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/admin/admin-shared.js"></script>
+    <script src="../assets/js/admin/settings.js"></script>
+</body>
+
+</html>

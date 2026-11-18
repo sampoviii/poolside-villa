@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+</head>
+<body id="accountPage">
+<!-- Customers can review their reservations and submitted reviews on this page. -->
+
+<!-- NAV -->
+<nav class="top-nav">
+    <div class="top-nav-inner">
+        <a href="home.html" class="nav-logo">
+            <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="nav-logo-img" onerror="this.style.display='none';" />
+        </a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <a href="home.html">Home</a>
+            <a href="booking.html">Book Reservation</a>
+            <a href="history.html" class="active">History</a>
+            <a href="review.html" id="reviewNavLink" style="display:none;">Review</a>
+        </div>
+        <div class="nav-account-area">
+            <div class="notif-wrap">
+                <button type="button" class="notif-bell" id="notifBell" aria-label="Notifications">
+                    <span class="material-icons" style="font-size:20px;vertical-align:middle;">notifications</span>
+                    <span class="notif-dot" id="notifDot" style="display:none;"></span>
+                </button>
+            </div>
+            <div class="account-wrap">
+                <button type="button" class="account-btn" id="profileButton">
+                    <span class="account-avatar" id="profileButtonInitial">G</span>
+                    <span class="account-name" id="profileButtonName">Guest</span>
+                    <span class="account-caret"><span class="material-icons" style="font-size:18px;vertical-align:middle;">arrow_drop_down</span></span>
+                </button>
+                <div class="account-menu" id="profileMenu">
+                    <div class="account-menu-head">
+                        <div class="account-avatar large" id="profileMenuInitial">G</div>
+                        <div>
+                            <div class="account-menu-name" id="profileMenuName">Guest</div>
+                            <div class="account-menu-email" id="profileMenuEmail"></div>
+                        </div>
+                    </div>
+                    <a href="settings.html" class="account-menu-item" id="settingsMenuLink"><span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;">settings</span>Settings</a>
+                    <button type="button" class="account-menu-item logout" id="logoutButton"><span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;">logout</span>Log Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="booking-hero">
+    <h1><span class="material-icons heading-icon">history</span> My History</h1>
+    <p>All your reservations and reviews at Poolside Villa.</p>
+</div>
+
+<!-- HISTORY LIST -->
+<div class="page-bg-cream" style="padding:40px 0; min-height:50vh;">
+    <div class="page-wrap">
+        <div id="historyList" class="history-list">
+            <!-- Cards rendered by history.js -->
+        </div>
+    </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="detailModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3>Details</h3>
+            <button class="modal-close-btn" data-close aria-label="Close"><span class="material-icons" style="font-size:18px;vertical-align:middle;">close</span></button>
+        </div>
+        <div class="modal-content" id="detailModalBody">
+            <!-- Filled by history.js -->
+        </div>
+    </div>
+</div>
+
+<!-- EDIT REVIEW MODAL -->
+<div id="editReviewModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3><span class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">edit</span>Edit Review</h3>
+            <button class="modal-close-btn" data-close aria-label="Close"><span class="material-icons" style="font-size:18px;vertical-align:middle;">close</span></button>
+        </div>
+        <div class="modal-content">
+            <form id="editReviewForm">
+                <input type="hidden" id="editReviewIndex" value="" />
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="editRevStay">Visit Type <span class="required">*</span></label>
+                        <select id="editRevStay" class="form-input" required>
+                            <option value="" disabled>Select type</option>
+                            <option value="Day Swim">Day Swim</option>
+                            <option value="Night Swim">Night Swim</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="editRevRating">Rating <span class="required">*</span></label>
+                        <select id="editRevRating" class="form-input" required>
+                            <option value="5">★★★★★ (5/5)</option>
+                            <option value="4">★★★★☆ (4/5)</option>
+                            <option value="3">★★★☆☆ (3/5)</option>
+                            <option value="2">★★☆☆☆ (2/5)</option>
+                            <option value="1">★☆☆☆☆ (1/5)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editRevText">Your Review <span class="required">*</span></label>
+                    <textarea id="editRevText" class="form-input" style="min-height:90px;" placeholder="Share your experience..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-sky btn-block">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ADD A REVIEW MODAL -->
+<div id="submitReviewModal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width: 480px;">
+        <div class="modal-head">
+            <h3 style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:1.2rem;"><span class="material-icons" style="font-size:18px;vertical-align:middle;">chat_bubble_outline</span></span> Add a Review
+            </h3>
+            <button class="modal-close-btn" data-close aria-label="Close"><span class="material-icons" style="font-size:18px;vertical-align:middle;">close</span></button>
+        </div>
+        <div class="modal-content">
+            <form id="submitReviewForm">
+                <input type="hidden" id="reviewBookingId" value="" />
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="newRevName">Your Name <span class="required">*</span></label>
+                        <input type="text" id="newRevName" class="form-input" placeholder="Your full name" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="newRevStay">Visit Type <span class="required">*</span></label>
+                        <select id="newRevStay" class="form-input" required>
+                            <option value="" disabled selected>Select type</option>
+                            <option value="Day Swim">Day Swim</option>
+                            <option value="Night Swim">Night Swim</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="newRevRating">Rating <span class="required">*</span></label>
+                    <select id="newRevRating" class="form-input" required>
+                        <option value="5">★★★★★ (5/5 - Excellent)</option>
+                        <option value="4">★★★★☆ (4/5 - Very Good)</option>
+                        <option value="3">★★★☆☆ (3/5 - Average)</option>
+                        <option value="2">★★☆☆☆ (2/5 - Poor)</option>
+                        <option value="1">★☆☆☆☆ (1/5 - Terrible)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="newRevText">Your Review <span class="required">*</span></label>
+                    <textarea id="newRevText" class="form-input" style="min-height:110px;"
+                        placeholder="Share your experience at Poolside Villa..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-sky btn-block btn-lg">Submit Review</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="background:var(--navy); border-top:1px solid rgba(255,255,255,0.08); padding:22px 16px; text-align:center;">
+    <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="footer-logo" style="margin:0 auto 10px;" onerror="this.style.display='none';" />
+    <p style="font-size:12px; color:rgba(255,255,255,0.5);">
+        &copy; 2026 Poolside Villa &nbsp;&middot;&nbsp; <span class="material-icons" style="font-size:12px;vertical-align:middle;opacity:0.6;">lock</span> Protected under RA 10173 (Data Privacy Act of 2012)
+    </p>
+</footer>
+
+<!-- Shared customer behavior loads before history.js renders records and review actions. -->
+<script src="../assets/js/action-confirm.js"></script>
+<script src="../assets/js/customer/shared.js"></script>
+<script src="../assets/js/customer/history.js"></script>
+</body>
+</html>
+
+

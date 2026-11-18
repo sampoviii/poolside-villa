@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+</head>
+<body id="accountPage">
+<!-- Customers can update their profile and change their account password here. -->
+
+<!-- NAV -->
+<nav class="top-nav">
+    <div class="top-nav-inner">
+        <a href="home.html" class="nav-logo">
+            <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="nav-logo-img" onerror="this.style.display='none';" />
+        </a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="nav-links" id="navLinks">
+            <a href="home.html">Home</a>
+            <a href="booking.html">Book Reservation</a>
+            <a href="history.html">History</a>
+            <a href="review.html" id="reviewNavLink" style="display:none;">Review</a>
+        </div>
+        <div class="nav-account-area">
+            <div class="notif-wrap">
+                <button type="button" class="notif-bell" id="notifBell" aria-label="Notifications">
+                    <span class="material-icons" style="font-size:20px;vertical-align:middle;">notifications</span>
+                    <span class="notif-dot" id="notifDot" style="display:none;"></span>
+                </button>
+            </div>
+            <div class="account-wrap">
+                <button type="button" class="account-btn" id="profileButton">
+                    <span class="account-avatar" id="profileButtonInitial">G</span>
+                    <span class="account-name" id="profileButtonName">Guest</span>
+                    <span class="account-caret"><span class="material-icons" style="font-size:18px;vertical-align:middle;">arrow_drop_down</span></span>
+                </button>
+                <div class="account-menu" id="profileMenu">
+                    <div class="account-menu-head">
+                        <div class="account-avatar large" id="profileMenuInitial">G</div>
+                        <div>
+                            <div class="account-menu-name" id="profileMenuName">Guest</div>
+                            <div class="account-menu-email" id="profileMenuEmail"></div>
+                        </div>
+                    </div>
+                    <a href="settings.html" class="account-menu-item active" id="settingsMenuLink"><span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;">settings</span>Settings</a>
+                    <button type="button" class="account-menu-item logout" id="logoutButton"><span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;">logout</span>Log Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="booking-hero">
+    <h1><span class="material-icons heading-icon">settings</span> Account Settings</h1>
+    <p>Update your password.</p>
+</div>
+
+<!-- SETTINGS FORM -->
+<div class="page-bg-cream" style="padding:40px 0; min-height:50vh;">
+    <div class="page-wrap" style="max-width:540px;">
+
+        <!-- CHANGE PASSWORD -->
+        <form id="settingsForm" class="form-section">
+            <div class="form-section-header">
+                <div class="form-section-icon"><span class="material-icons">lock</span></div>
+                <div>
+                    <h3>Change Password</h3>
+                    <p>Enter your current password to save changes.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="settingsCurrentPassword">
+                    Current Password <span class="required">*</span>
+                </label>
+                <input type="password" id="settingsCurrentPassword" class="form-input"
+                       placeholder="Enter your current password" required />
+            </div>
+
+            <hr class="sep" />
+
+            <div class="form-group">
+                <label class="form-label" for="settingsNewPassword">New Password</label>
+                <input type="password" id="settingsNewPassword" class="form-input"
+                       placeholder="Min. 8 chars, uppercase, lowercase, number, and symbol" required />
+                <span class="form-hint" id="settingsPwHint"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="settingsConfirmPassword">Confirm New Password</label>
+                <input type="password" id="settingsConfirmPassword" class="form-input"
+                       placeholder="Re-enter new password" required />
+            </div>
+
+            <button type="submit" class="btn btn-sky btn-lg btn-block">Save Changes</button>
+        </form>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="background:var(--navy); border-top:1px solid rgba(255,255,255,0.08); padding:22px 16px; text-align:center;">
+    <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="footer-logo" style="margin:0 auto 10px;" onerror="this.style.display='none';" />
+    <p style="font-size:12px; color:rgba(255,255,255,0.5);">
+        &copy; 2026 Poolside Villa &nbsp;&middot;&nbsp; <span class="material-icons" style="font-size:12px;vertical-align:middle;opacity:0.6;">lock</span> Protected under RA 10173 (Data Privacy Act of 2012)
+    </p>
+</footer>
+
+<!-- Shared form helpers load before the customer settings form behavior. -->
+<script src="../assets/js/password-toggle.js"></script>
+<script src="../assets/js/live-validation.js"></script>
+<script src="../assets/js/action-confirm.js"></script>
+<script src="../assets/js/customer/shared.js"></script>
+<script src="../assets/js/customer/settings.js"></script>
+</body>
+</html>

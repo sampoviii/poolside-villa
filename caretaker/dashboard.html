@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa — Caretaker</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+
+<!-- caretaker-page = requires caretaker login (see caretaker-shared.js) -->
+<body class="caretaker-page">
+<!-- This dashboard summarizes pending, today's, and upcoming reservations for caretakers. -->
+<div class="admin-layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="admin-sidebar">
+        <div class="admin-brand">
+            <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+            <div>
+                <div class="admin-brand-sub">Caretaker Panel</div>
+            </div>
+        </div>
+
+        <nav class="admin-nav">
+            <a href="dashboard.html" class="active"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+            <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+            <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+            <a href="reservations.html"><span class="material-icons nav-icon">list_alt</span> Reservations</a>
+        </nav>
+
+        <div class="admin-nav-bottom">
+            <button type="button" id="caretakerLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+            <h1>Dashboard</h1>
+            <div class="admin-who">Signed in as <b id="caretakerNameLabel">Caretaker</b></div>
+        </div>
+
+        <div class="admin-body">
+
+            <!-- Today's guest schedule -->
+            <div class="admin-card" style="margin-bottom:24px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+                    <div>
+                        <h2>Today's Guest Schedule</h2>
+                        <p class="card-note" id="todayDateLabel">Today's check-ins, check-outs, and resort balances.</p>
+                    </div>
+                    <button type="button" id="refreshCheckinBtn" class="btn btn-sm btn-outline" style="border-radius:20px; border-color:#1e5138; color:#1e5138; font-weight:600;">
+                        Refresh
+                    </button>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Guest Name</th>
+                                <th>Check-In</th>
+                                <th>Check-Out</th>
+                                <th>Due at Resort</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todayScheduleBody">
+                            <tr><td colspan="5" class="admin-empty">Loading today's schedule...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pending reservations — view only -->
+            <div class="admin-card">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+                    <div>
+                        <h2><span class="material-icons heading-icon">pending</span> Pending Reservations</h2>
+                        <p class="card-note">Reservations waiting for payment verification.</p>
+                    </div>
+                    <a href="payment-verification.html" class="btn btn-sky btn-sm">Go to Payment Verification</a>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Guest Name</th>
+                                <th>Visit Date</th>
+                                <th>Time</th>
+                                <th>Package</th>
+                                <th>Amount</th>
+                                <th>Booked On</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingBody">
+                            <tr><td colspan="7" class="admin-empty">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- /admin-body -->
+    </div><!-- /admin-main -->
+
+</div><!-- /admin-layout -->
+
+<!-- Shared caretaker access and page scripts fill the reservation dashboard. -->
+<script src="../assets/js/action-confirm.js"></script>
+<script src="../assets/js/caretaker/caretaker-shared.js"></script>
+<script src="../assets/js/caretaker/dashboard.js"></script>
+</body>
+</html>

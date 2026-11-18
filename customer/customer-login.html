@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <style>
+        /* Blurred resort photo behind the login card */
+        
+        .auth-page::before {
+            background-image: url('../assets/images/login-bg-customer.jpg');
+        }
+        
+        .policy-trigger-link {
+            color: var(--sky, #1e5f74);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .policy-trigger-link:hover {
+            opacity: 0.85;
+        }
+        
+        .policy-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .policy-modal-overlay.show {
+            display: flex;
+        }
+        
+        .policy-modal-box {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 85vh;
+            padding: 20px 24px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- This page switches between login, signup, and the two password-reset steps. -->
+
+    <div class="auth-page">
+        <div class="auth-card">
+
+            <div class="auth-head">
+                <h1>Welcome to</h1>
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="auth-logo" />
+                <p>Please log in or create an account to book your stay.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" data-auth-tab="login">Login</button>
+                <button type="button" class="auth-tab" data-auth-tab="signup">Sign Up</button>
+            </div>
+
+            <div class="auth-message" id="authMessage"></div>
+
+            <!-- LOGIN FORM -->
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="you@gmail.com" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required />
+                </div>
+                <button type="submit" class="btn btn-sky btn-block btn-lg">Login</button>
+                <p class="auth-back" style="margin-top:14px;">
+                    <a href="#" id="forgotPasswordLink">Forgot password?</a>
+                </p>
+            </form>
+
+            <!-- SIGN UP FORM -->
+            <form class="auth-form" id="signupForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="signupFirstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="signupFirstName" class="form-input" placeholder="Juan" required />
+                        <span class="form-hint" id="firstNameHint"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signupLastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="signupLastName" class="form-input" placeholder="Dela Cruz" required />
+                        <span class="form-hint" id="lastNameHint"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupEmail">Email Address <span class="required">*</span></label>
+                    <input type="email" id="signupEmail" class="form-input" placeholder="you@gmail.com" required />
+                    <span class="form-hint" id="emailHint"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupPhone">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="signupPhone" class="form-input" placeholder="09123456789" required />
+                    <span class="form-hint" id="phoneHint"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupPassword">Password <span class="required">*</span></label>
+                    <input type="password" id="signupPassword" class="form-input" placeholder="Min. 8 chars, 1 uppercase, 1 number/symbol" required />
+                    <span class="form-hint" id="passwordStrengthHint"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signupConfirmPassword">Confirm Password <span class="required">*</span></label>
+                    <input type="password" id="signupConfirmPassword" class="form-input" placeholder="Re-enter your password" required />
+                    <span class="form-hint" id="confirmPasswordHint"></span>
+                </div>
+                <div class="form-group" style="margin-top: 10px; margin-bottom: 16px;">
+                    <div style="display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--gray-700); line-height: 1.4;">
+                        <input type="checkbox" id="signupPrivacyAgree" name="privacyAgreement" style="accent-color: var(--sky); margin-top: 2px; flex-shrink: 0; cursor: pointer;" required />
+                        <span>
+                            <label for="signupPrivacyAgree" style="cursor: pointer;">I agree to the </label>
+                            <strong id="openTermsModalLink" class="policy-trigger-link" role="button" tabindex="0">Terms &amp; Conditions</strong>
+                            <label for="signupPrivacyAgree" style="cursor: pointer;"> and the </label>
+                            <strong id="openPrivacyModalLink" class="policy-trigger-link" role="button" tabindex="0">Data Privacy Agreement</strong>
+                            <label for="signupPrivacyAgree" style="cursor: pointer;"> under RA 10173 (Data Privacy Act of 2012).</label>
+                        </span>
+                    </div>
+                    <span class="form-hint" id="privacyHint"></span>
+                </div>
+                <button type="submit" class="btn btn-sky btn-block btn-lg">Create Account</button>
+            </form>
+
+            <!-- FORGOT PASSWORD — STEP 1 -->
+            <form class="auth-form" id="forgotPasswordForm">
+                <p style="font-size:13px; color:#635d53; margin-bottom:16px;">
+                    Enter your email address to receive a verification code.
+                </p>
+                <div class="form-group">
+                    <label class="form-label" for="forgotEmail">Email Address</label>
+                    <input type="email" id="forgotEmail" class="form-input" placeholder="you@gmail.com" required />
+                </div>
+                <button type="submit" class="btn btn-sky btn-block btn-lg">Send Code</button>
+                <p class="auth-back" style="margin-top:14px;">
+                    <a href="#" id="backToLoginLink"><span class="material-icons" style="font-size:16px;vertical-align:middle;">arrow_back</span> Back to Login</a>
+                </p>
+            </form>
+
+            <!-- FORGOT PASSWORD — STEP 2 -->
+            <form class="auth-form" id="forgotStep2Form">
+                <p style="font-size:13px; color:#635d53; margin-bottom:16px;">
+                    Enter the 6-digit verification code sent to your email.
+                </p>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="forgotStep2Email" class="form-input" readonly style="background:var(--cream); color:var(--gray-600);" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="forgotCode">6-Digit Verification Code <span class="required">*</span></label>
+                    <input type="text" id="forgotCode" class="form-input" placeholder="123456" maxlength="6" required style="letter-spacing: 3px; font-weight: bold; text-align: center;" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="forgotNewPassword">New Password <span class="required">*</span></label>
+                    <input type="password" id="forgotNewPassword" class="form-input" placeholder="Min. 8 chars, 1 uppercase, 1 number/symbol" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="forgotConfirmPassword">Confirm New Password <span class="required">*</span></label>
+                    <input type="password" id="forgotConfirmPassword" class="form-input" placeholder="Re-enter new password" required />
+                </div>
+                <button type="submit" class="btn btn-sky btn-block btn-lg">Reset Password</button>
+                <p class="auth-back" style="margin-top:14px;">
+                    <a href="#" id="backToLoginFromStep2"><span class="material-icons" style="font-size:16px;vertical-align:middle;">arrow_back</span> Back to Login</a>
+                </p>
+            </form>
+
+            <p class="auth-back">
+                <a href="../index.html"><span class="material-icons" style="font-size:16px;vertical-align:middle;">arrow_back</span> Back to Home</a>
+            </p>
+
+        </div>
+    </div>
+
+    <!-- TERMS & CONDITIONS MODAL -->
+    <div class="policy-modal-overlay" id="termsConditionsModal" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle">
+        <div class="policy-modal-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
+                <h3 id="termsModalTitle" style="margin:0; font-size:18px; color:var(--gray-900);">Terms &amp; Conditions</h3>
+                <button type="button" id="closeTermsModalBtn" aria-label="Close" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-600); line-height:1;">&times;</button>
+            </div>
+            <div style="overflow-y:auto; padding:16px 0; font-size:13px; color:var(--gray-700); line-height:1.6;">
+                <p style="margin-top:0;">Welcome to <strong>Poolside Villa</strong>. By creating an account and using our online reservation system, you agree to the following terms and conditions:</p>
+                <ol style="padding-left:18px; margin:0; display:flex; flex-direction:column; gap:10px;">
+                    <li><strong>Account Registration &amp; Accuracy:</strong> You must provide true, accurate, and complete personal information (full name, valid email address, and active mobile number) when registering an account.</li>
+                    <li><strong>Reservation &amp; Down Payment Policy:</strong> All reservations require a <strong>50% package down payment</strong> (plus full LPG fee if availed) via GCash, accompanied by a valid proof of payment receipt for verification.</li>
+                    <li><strong>Check-In, Stay Duration &amp; Clean-Up Buffer:</strong> Standard resort reservations cover a <strong>22-hour stay</strong> starting from your chosen check-in time, followed by a mandatory 2-hour sanitation and preparation buffer.</li>
+                    <li><strong>Cancellation &amp; Rescheduling:</strong> Down payments are non-refundable once verified, except in cases of force majeure or resort-initiated closures. Rescheduling requests are subject to date availability and management
+                        approval.</li>
+                    <li><strong>Resort Rules &amp; Property Care:</strong> Guests are expected to observe resort safety rules, maximum guest capacity per package, and proper care of villa facilities. Any damage to property may be charged accordingly.</li>
+                </ol>
+            </div>
+            <div style="padding-top:12px; border-top:1px solid var(--gray-200); display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" class="btn btn-sky btn-sm" id="ackTermsModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA PRIVACY AGREEMENT MODAL -->
+    <div class="policy-modal-overlay" id="dataPrivacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+        <div class="policy-modal-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
+                <h3 id="privacyModalTitle" style="margin:0; font-size:18px; color:var(--gray-900);">Data Privacy Agreement (RA 10173)</h3>
+                <button type="button" id="closePrivacyModalBtn" aria-label="Close" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-600); line-height:1;">&times;</button>
+            </div>
+            <div style="overflow-y:auto; padding:16px 0; font-size:13px; color:var(--gray-700); line-height:1.6;">
+                <p style="margin-top:0;">In compliance with <strong>Republic Act No. 10173</strong>, also known as the <strong>Data Privacy Act of 2012</strong>, <strong>Poolside Villa</strong> is committed to protecting and respecting your personal information.</p>
+                <ul style="padding-left:18px; margin:0; display:flex; flex-direction:column; gap:10px;">
+                    <li><strong>Information We Collect:</strong> We collect your first name, last name, email address, phone number, reservation details, and uploaded GCash payment receipts strictly for account management and booking verification.</li>
+                    <li><strong>Purpose of Processing:</strong> Your personal data is used solely to process resort reservations, verify payments, send booking or password-reset notifications, and maintain customer support records.</li>
+                    <li><strong>Data Protection &amp; Security:</strong> Passwords are encrypted using industry-standard hashing, and access to personal and payment records is restricted to authorized Poolside Villa administrators and caretakers.</li>
+                    <li><strong>Non-Disclosure to Third Parties:</strong> Poolside Villa will never sell, rent, or share your personal information with unauthorized third parties unless required by law.</li>
+                    <li><strong>Your Rights as a Data Subject:</strong> Under RA 10173, you have the right to access, correct, or request the deletion of your personal data by contacting Poolside Villa management.</li>
+                </ul>
+            </div>
+            <div style="padding-top:12px; border-top:1px solid var(--gray-200); display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" class="btn btn-sky btn-sm" id="ackPrivacyModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared input helpers load before login.js handles the authentication forms. -->
+    <script src="../assets/js/password-toggle.js"></script>
+    <script src="../assets/js/live-validation.js"></script>
+    <script src="../assets/js/customer/shared.js"></script>
+    <script src="../assets/js/customer/login.js?v=3"></script>
+    <script>
+        (function() {
+            function wirePolicyPopup(triggerId, modalId, closeBtnId, ackBtnId) {
+                var trigger = document.getElementById(triggerId);
+                var modal = document.getElementById(modalId);
+                var closeBtn = document.getElementById(closeBtnId);
+                var ackBtn = document.getElementById(ackBtnId);
+                if (!trigger || !modal) return;
+
+                function openPopup(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    modal.classList.add('show');
+                }
+
+                function closePopup() {
+                    modal.classList.remove('show');
+                }
+
+                trigger.addEventListener('click', openPopup);
+                trigger.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') openPopup(e);
+                });
+                if (closeBtn) closeBtn.addEventListener('click', closePopup);
+                if (ackBtn) ackBtn.addEventListener('click', closePopup);
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) closePopup();
+                });
+            }
+
+            wirePolicyPopup('openTermsModalLink', 'termsConditionsModal', 'closeTermsModalBtn', 'ackTermsModalBtn');
+            wirePolicyPopup('openPrivacyModalLink', 'dataPrivacyModal', 'closePrivacyModalBtn', 'ackPrivacyModalBtn');
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    var t = document.getElementById('termsConditionsModal');
+                    var p = document.getElementById('dataPrivacyModal');
+                    if (t) t.classList.remove('show');
+                    if (p) p.classList.remove('show');
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

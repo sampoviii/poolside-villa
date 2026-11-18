@@ -1,0 +1,531 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa — Caretaker Reservations</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+    <style>
+        .filter-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: 1.5px solid var(--sky);
+            background: transparent;
+            color: var(--sky);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--sky);
+            color: #fff;
+        }
+        /* Search & Date Range Filter Toolbar */
+        
+        .table-filter-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+        }
+        
+        .filter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .filter-field label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        
+        .filter-field.search-grow {
+            flex: 1 1 250px;
+        }
+        
+        .search-input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input-wrap .material-icons {
+            position: absolute;
+            left: 11px;
+            font-size: 18px;
+            color: #94a3b8;
+            pointer-events: none;
+        }
+        
+        .filter-input {
+            width: 100%;
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1e293b;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        
+        .search-input-wrap .filter-input {
+            padding-left: 36px;
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--sky);
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.12);
+        }
+        
+        .filter-toolbar-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+        
+        .filter-count-pill {
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            background: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        /* Proof Viewer Modal Window */
+        
+        .proof-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .proof-modal-card {
+            background: #fff;
+            border-radius: 12px;
+            max-width: 550px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .proof-modal-header {
+            padding: 14px 20px;
+            background: var(--navy);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+        
+        .proof-modal-body {
+            padding: 20px;
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .proof-modal-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        /* Official Emailed Receipt Preview Modal */
+        
+        .receipt-modal-card {
+            background: #fff;
+            border-radius: 14px;
+            max-width: 640px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            max-height: 92vh;
+        }
+        
+        .receipt-modal-toolbar {
+            padding: 12px 18px;
+            background: #1a3d2b;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .receipt-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-dl-receipt {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 13px;
+            border-radius: 20px;
+            border: none;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+        
+        .btn-dl-receipt:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-dl-png {
+            background: #b8943a;
+            color: #fff;
+        }
+        
+        .btn-dl-pdf {
+            background: #ffffff;
+            color: #1a3d2b;
+        }
+        
+        .receipt-scroll-area {
+            padding: 22px;
+            overflow-y: auto;
+            background: #eef2f0;
+        }
+        
+        .official-receipt-sheet {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #d7e2dc;
+            box-shadow: 0 4px 16px rgba(26, 61, 43, 0.08);
+            font-family: Arial, sans-serif;
+            color: #28251f;
+        }
+        
+        .or-header {
+            background: #f5f3ee;
+            padding: 22px 26px;
+            border-top: 6px solid #1a3d2b;
+            border-bottom: 3px solid #2d6a4f;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .or-header img {
+            width: 140px;
+            height: auto;
+            display: block;
+            border-radius: 6px;
+        }
+        
+        .or-kicker {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #b8943a;
+            text-transform: uppercase;
+        }
+        
+        .or-title {
+            margin: 4px 0 6px;
+            font-size: 21px;
+            color: #1a3d2b;
+            font-weight: 800;
+        }
+        
+        .or-badge {
+            display: inline-block;
+            background: #e8f3ee;
+            color: #2d6a4f;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .or-body {
+            padding: 22px 26px;
+        }
+        
+        .or-ref-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #dee8e3;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .or-ref-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #635d53;
+            letter-spacing: 0.6px;
+        }
+        
+        .or-ref-val {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a3d2b;
+        }
+        
+        .or-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid #ebf0ed;
+            font-size: 13px;
+            gap: 12px;
+        }
+        
+        .or-detail-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #635d53;
+            text-transform: uppercase;
+        }
+        
+        .or-detail-val {
+            font-weight: 600;
+            color: #28251f;
+            text-align: right;
+        }
+        
+        .or-comp-box {
+            margin-top: 18px;
+            background: #e8f3ee;
+            border-radius: 8px;
+            padding: 16px 18px;
+        }
+        
+        .or-comp-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #2d6a4f;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .or-comp-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 4px 0;
+            gap: 10px;
+        }
+        
+        .or-comp-row.bold {
+            font-weight: 700;
+        }
+        
+        .or-comp-amount {
+            font-weight: 800;
+            color: #1a3d2b;
+            white-space: nowrap;
+        }
+        
+        .or-footer {
+            margin-top: 18px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 12px;
+            color: #635d53;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body class="caretaker-page">
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="admin-brand">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+                <div>
+                    <div class="admin-brand-sub">Caretaker Panel</div>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="dashboard.html"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+                <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+                <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+                <a href="reservations.html" class="active"><span class="material-icons nav-icon">list_alt</span> Reservations</a>
+            </nav>
+
+            <div class="admin-nav-bottom">
+                <button type="button" id="caretakerLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+                <h1>Reservation History</h1>
+                <div class="admin-who">Signed in as <b id="caretakerNameLabel">Caretaker</b></div>
+            </div>
+
+            <div class="admin-body">
+
+                <div class="admin-card">
+                    <h2>Reservation History</h2>
+                    <p class="card-note">Every reservation made by customers, newest first. Approved bookings include the official emailed receipt (PNG &amp; PDF).</p>
+
+                    <div class="filter-btn-group">
+                        <button type="button" class="filter-btn active" data-filter="all">All</button>
+                        <button type="button" class="filter-btn" data-filter="pending">Pending</button>
+                        <button type="button" class="filter-btn" data-filter="approved">Approved</button>
+                        <button type="button" class="filter-btn" data-filter="declined">Declined</button>
+                    </div>
+
+                    <div class="table-filter-toolbar">
+                        <div class="filter-field search-grow">
+                            <label for="historySearchInput">Search Reservation</label>
+                            <div class="search-input-wrap">
+                                <span class="material-icons">search</span>
+                                <input type="text" id="historySearchInput" class="filter-input" placeholder="Search by Ref (BK-...), Guest, Email, Phone, or Package..." />
+                            </div>
+                        </div>
+                        <div class="filter-field">
+                            <label for="historyDateFrom">Visit Date From</label>
+                            <input type="date" id="historyDateFrom" class="filter-input" />
+                        </div>
+                        <div class="filter-field">
+                            <label for="historyDateTo">Visit Date To</label>
+                            <input type="date" id="historyDateTo" class="filter-input" />
+                        </div>
+                        <div class="filter-toolbar-meta">
+                            <span class="filter-count-pill" id="historyResultCount">Showing 0</span>
+                            <button type="button" class="btn btn-sm btn-outline" id="historyClearFiltersBtn" style="height:38px; border-radius:8px; font-weight:600;">Clear</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>REF</th>
+                                    <th>GUEST</th>
+                                    <th>EMAIL</th>
+                                    <th>PHONE</th>
+                                    <th>VISIT DATE</th>
+                                    <th>TIME</th>
+                                    <th>PACKAGE</th>
+                                    <th>PAX</th>
+                                    <th>LPG ADDON</th>
+                                    <th>TOTAL AMOUNT</th>
+                                    <th>DOWNPAYMENT (50%)</th>
+                                    <th>WALK-IN PAYMENT (50%)</th>
+                                    <th>STATUS</th>
+                                    <th>BOOKED ON</th>
+                                    <th>PAYMENT PROOF</th>
+                                    <th>EMAILED RECEIPT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <tr>
+                                    <td colspan="16" style="text-align:center; padding:20px; color:var(--gray-400);">Loading reservation history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Window for Viewing Customer Payment Proof Images -->
+    <div class="proof-modal-overlay" id="proofModal" onclick="if(event.target===this) closeProofModal();">
+        <div class="proof-modal-card">
+            <div class="proof-modal-header">
+                <span>Customer Payment Proof</span>
+                <button type="button" onclick="closeProofModal()" style="background:none; border:none; color:#fff; font-size:20px; cursor:pointer;">&times;</button>
+            </div>
+            <div class="proof-modal-body">
+                <img id="proofModalImg" src="" alt="Payment Proof Image" onerror="this.src='../assets/images/no-proof.png';" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Window for Viewing & Downloading Official Emailed Receipt (PNG / PDF) -->
+    <div class="proof-modal-overlay" id="officialReceiptModal" onclick="if(event.target===this) closeOfficialReceiptModal();">
+        <div class="receipt-modal-card">
+            <div class="receipt-modal-toolbar">
+                <span style="font-weight:700; font-size:15px;">Official Customer Receipt</span>
+                <div class="receipt-toolbar-actions">
+                    <button type="button" class="btn-dl-receipt btn-dl-png" id="downloadReceiptPngBtn">
+                        <span class="material-icons" style="font-size:15px;">image</span> Download PNG
+                    </button>
+                    <button type="button" class="btn-dl-receipt btn-dl-pdf" id="downloadReceiptPdfBtn">
+                        <span class="material-icons" style="font-size:15px;">picture_as_pdf</span> Download PDF
+                    </button>
+                    <button type="button" onclick="closeOfficialReceiptModal()" aria-label="Close" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer; line-height:1; margin-left:4px;">&times;</button>
+                </div>
+            </div>
+            <div class="receipt-scroll-area">
+                <div class="official-receipt-sheet" id="officialReceiptPreviewBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/caretaker/caretaker-shared.js"></script>
+    <script src="../assets/js/caretaker/reservations.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa - Transaction Reports</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+    <style>
+        .report-filters {
+            display: flex;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .report-field {
+            display: grid;
+            gap: 6px;
+            min-width: 150px;
+        }
+
+        .report-field label {
+            color: var(--gray-600);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .report-field select {
+            min-height: 42px;
+            padding: 8px 12px;
+            border: 1px solid var(--cream-line);
+            border-radius: var(--radius);
+            background: var(--white);
+            color: var(--gray-800);
+            font: inherit;
+        }
+
+        .report-field[hidden] {
+            display: none;
+        }
+
+        .report-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .report-actions button:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+            transform: none;
+        }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .report-stat {
+            padding: 16px;
+            border: 1px solid var(--cream-line);
+            border-radius: var(--radius);
+            background: var(--white);
+        }
+
+        .report-stat span {
+            display: block;
+            color: var(--gray-600);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .report-stat strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--navy);
+            font-size: 22px;
+        }
+
+        .report-table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--cream-line);
+            border-radius: var(--radius-lg);
+            background: var(--cream-soft);
+            padding: 0 14px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .report-table-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 2px 8px;
+        }
+
+        .report-table-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--navy);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .report-table-title .material-icons {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            place-items: center;
+            border-radius: 10px;
+            background: var(--sky-light);
+            color: var(--sky-darker);
+            font-size: 19px;
+        }
+
+        .report-row-count {
+            padding: 5px 10px;
+            border: 1px solid var(--cream-line);
+            border-radius: 20px;
+            background: var(--white);
+            color: var(--gray-600);
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .report-table {
+            min-width: 850px;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            font-size: 12px;
+        }
+
+        .report-table thead th {
+            padding: 11px 12px;
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.9);
+            border: 0;
+            font-size: 10px;
+            letter-spacing: 0.07em;
+        }
+
+        .report-table thead th:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .report-table thead th:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .report-table tbody tr {
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(26, 61, 43, 0.045);
+            transition: transform 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .report-table tbody tr:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(26, 61, 43, 0.09);
+        }
+
+        .report-table tbody td {
+            padding: 12px;
+            border-top: 1px solid rgba(221, 216, 204, 0.75);
+            border-bottom: 1px solid rgba(221, 216, 204, 0.75);
+            white-space: nowrap;
+        }
+
+        .report-table tbody td:first-child {
+            border-left: 1px solid rgba(221, 216, 204, 0.75);
+            border-radius: 10px 0 0 10px;
+        }
+
+        .report-table tbody td:last-child {
+            border-right: 1px solid rgba(221, 216, 204, 0.75);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .report-table tbody td.report-date-cell {
+            min-width: 112px;
+        }
+
+        .report-date-main,
+        .report-date-time {
+            display: block;
+        }
+
+        .report-date-main {
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        .report-date-time {
+            margin-top: 2px;
+            color: var(--gray-400);
+            font-size: 10px;
+        }
+
+        .report-table tbody td.report-reference {
+            color: var(--sky-darker);
+            font-family: var(--font-main);
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .report-table tbody td.report-money {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 700;
+        }
+
+        .report-table tbody td.report-paid {
+            color: var(--sky-darker);
+        }
+
+        .report-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .report-status-badge::before {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            content: "";
+        }
+
+        .report-status-approved {
+            background: var(--sky-light);
+            color: var(--sky-darker);
+        }
+
+        .report-status-declined {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .report-status-pending {
+            background: var(--clay-light);
+            color: var(--clay-dark);
+        }
+
+        .report-table tbody td.report-empty-cell {
+            padding: 30px 16px;
+            border: 1px solid var(--cream-line);
+            border-radius: 10px;
+            color: var(--gray-600);
+            text-align: center;
+            background: var(--white);
+        }
+
+        .report-note {
+            margin-top: 12px;
+            color: var(--gray-600);
+            font-size: 12px;
+        }
+
+        @media (max-width: 760px) {
+            .report-summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 420px) {
+            .report-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="admin-page">
+    <!-- The report screen filters saved reservations and provides downloadable summaries. -->
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="admin-brand">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+                <div><div class="admin-brand-sub" id="adminPanelLabel">Admin Panel</div></div>
+            </div>
+            <nav class="admin-nav">
+                <a href="dashboard.html"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+                <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+                <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+                <a href="reservation-history.html"><span class="material-icons nav-icon">list_alt</span> Reservation History</a>
+                <a href="reports.html" class="active"><span class="material-icons nav-icon">assessment</span> Reports</a>
+                <a href="reviews.html"><span class="material-icons nav-icon">star</span> Customer Reviews</a>
+                <a href="user-management.html"><span class="material-icons nav-icon">group</span> User Management</a>
+                <a href="audit-logs.html"><span class="material-icons nav-icon">history</span> Audit Logs</a>
+                <a href="settings.html"><span class="material-icons nav-icon">settings</span> Settings</a>
+            </nav>
+            <div class="admin-nav-bottom">
+                <button type="button" id="adminLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+            </div>
+        </aside>
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+                <h1>Transaction Reports</h1>
+                <div class="admin-who">Signed in as <b id="adminNameLabel">Admin</b></div>
+            </div>
+            <main class="admin-body">
+                <section class="admin-card">
+                    <h2>Resort Transaction Report</h2>
+                    <p class="card-note">Review reservation transactions by month or year. Reports use the date each reservation was created.</p>
+                    <div class="report-filters">
+                        <div class="report-field">
+                            <label for="reportPeriod">Report period</label>
+                            <select id="reportPeriod">
+                                <option value="monthly">Monthly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                        </div>
+                        <div class="report-field" id="monthField">
+                            <label for="reportMonth">Month</label>
+                            <select id="reportMonth">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div class="report-field">
+                            <label for="reportYear">Year</label>
+                            <select id="reportYear"></select>
+                        </div>
+                        <div class="report-actions">
+                            <button type="button" class="btn btn-sky" id="generateReportBtn">Generate Report</button>
+                            <button type="button" class="btn btn-outline" id="downloadCsvBtn" disabled>Download CSV</button>
+                            <button type="button" class="btn btn-outline" id="downloadPdfBtn" disabled>Download PDF</button>
+                        </div>
+                    </div>
+                    <div class="report-summary" aria-live="polite">
+                        <div class="report-stat"><span>Transactions</span><strong id="reportCount">--</strong></div>
+                        <div class="report-stat"><span>Approved</span><strong id="reportApproved">--</strong></div>
+                        <div class="report-stat"><span>Approved booking value</span><strong id="reportValue">--</strong></div>
+                        <div class="report-stat"><span>Payments received*</span><strong id="reportCollected">--</strong></div>
+                    </div>
+                    <div class="report-table-wrap">
+                        <div class="report-table-heading">
+                            <div class="report-table-title"><span class="material-icons">receipt_long</span>Reservation transactions</div>
+                            <span class="report-row-count" id="reportRowCount">0 records</span>
+                        </div>
+                        <table class="admin-table report-table">
+                            <thead>
+                                <tr>
+                                    <th>BOOKED ON</th>
+                                    <th>REFERENCE</th>
+                                    <th>GUEST</th>
+                                    <th>VISIT DATE</th>
+                                    <th>PACKAGE</th>
+                                    <th>GUESTS</th>
+                                    <th style="text-align:right;">TOTAL VALUE</th>
+                                    <th style="text-align:right;">PAYMENT SUBMITTED</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody">
+                                <tr><td colspan="9" style="text-align:center; padding:20px; color:var(--gray-400);">Choose a period and generate a report.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="report-note">* Payments received includes submitted down payments for approved reservations only. Pending submissions are shown separately in the transaction list.</p>
+                </section>
+            </main>
+        </div>
+    </div>
+    <!-- Shared admin behavior loads first; reports.js handles filters, table rows, and exports. -->
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/admin/admin-shared.js"></script>
+    <script src="../assets/js/admin/reports.js"></script>
+</body>
+
+</html>

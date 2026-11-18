@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa - Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+    <style>
+        /* Responsive Grid & Card Styling */
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .kpi-card-custom {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid #ccc;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .kpi-card-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        }
+        
+        .kpi-total {
+            border-left-color: #2b4c7e;
+            background: linear-gradient(135deg, #ffffff 0%, #f4f7fc 100%);
+        }
+        
+        .kpi-pending {
+            border-left-color: #d99b26;
+            background: linear-gradient(135deg, #ffffff 0%, #fdf8ec 100%);
+        }
+        
+        .kpi-approved {
+            border-left-color: #1e5138;
+            background: linear-gradient(135deg, #ffffff 0%, #edf7f2 100%);
+        }
+        
+        .kpi-earnings {
+            border-left-color: #0077b6;
+            background: linear-gradient(135deg, #ffffff 0%, #eef7ff 100%);
+        }
+        
+        .kpi-info .kpi-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #777;
+            margin-bottom: 6px;
+        }
+        
+        .kpi-info .kpi-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #111;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        
+        .kpi-info .kpi-foot {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .kpi-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+        
+        .kpi-total .kpi-icon-box {
+            background: #2b4c7e;
+        }
+        
+        .kpi-pending .kpi-icon-box {
+            background: #d99b26;
+        }
+        
+        .kpi-approved .kpi-icon-box {
+            background: #1e5138;
+        }
+        /* SVG Line Graph Fluid Container */
+        
+        .line-chart-container {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(to bottom, #fafbfb, #f0f4f2);
+            border-radius: 8px;
+            border: 1px solid #e6eeea;
+            padding: 20px 10px 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        .chart-point:hover {
+            r: 6;
+            fill: #1e5138;
+        }
+        /* Downpayments & Completion Modals */
+        
+        .dp-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .dp-modal-overlay.show {
+            display: flex;
+        }
+        
+        .dp-modal-box {
+            background: #ffffff;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 860px;
+            max-height: 86vh;
+            padding: 22px 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dp-modal-box.sm {
+            max-width: 460px;
+        }
+        
+        .badge-completed-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #dcfce7;
+            color: #166534;
+        }
+        /* Fluid Breakpoints for Tablet & Mobile Viewports */
+        
+        @media (max-width: 1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .kpi-card-custom {
+                padding: 16px 18px;
+            }
+            .kpi-info .kpi-value {
+                font-size: 26px;
+            }
+            .line-chart-container {
+                height: 180px;
+                padding: 10px 4px;
+            }
+            .admin-card {
+                padding: 14px;
+            }
+        }
+
+    </style>
+</head>
+
+<body class="admin-page">
+    <!-- The admin dashboard combines summary cards, booking trends, and pending approvals. -->
+    <div class="admin-layout">
+
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="admin-brand">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+                <div>
+                    <div class="admin-brand-sub" id="adminPanelLabel">Admin Panel</div>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="dashboard.html" class="active"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+                <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+                <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+                <a href="reservation-history.html"><span class="material-icons nav-icon">list_alt</span> Reservation History</a>
+                <a href="reports.html"><span class="material-icons nav-icon">assessment</span> Reports</a>
+                <a href="reviews.html"><span class="material-icons nav-icon">star</span> Customer Reviews</a>
+                <a href="user-management.html"><span class="material-icons nav-icon">group</span> User Management</a>
+                <a href="audit-logs.html"><span class="material-icons nav-icon">history</span> Audit Logs</a>
+                <a href="settings.html"><span class="material-icons nav-icon">settings</span> Settings</a>
+            </nav>
+
+            <div class="admin-nav-bottom">
+                <button type="button" id="adminLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Body Area -->
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button type="button" class="admin-menu-toggle" id="sidebarToggle" aria-label="Toggle navigation drawer">
+                    <span class="material-icons topbar-icon">menu</span>
+                </button>
+                <h1>Dashboard</h1>
+                <div class="admin-who">Signed in as <b id="adminNameLabel">Admin</b></div>
+            </div>
+
+            <div class="admin-body">
+
+                <!-- Responsive Top KPI Cards -->
+                <div class="kpi-grid">
+                    <!-- TOTAL RESERVATIONS -> Opens ONLY the Approved section -->
+                    <a href="reservation-history.html?status=approved" class="kpi-card-custom kpi-total" style="text-decoration:none; color:inherit; cursor:pointer;">
+                        <div class="kpi-info">
+                            <div class="kpi-title">TOTAL RESERVATIONS</div>
+                            <div class="kpi-value" id="kpiTotal">0</div>
+                            <div class="kpi-foot">Accepted bookings</div>
+                        </div>
+                        <div class="kpi-icon-box"><span class="material-icons">bookmark</span></div>
+                    </a>
+
+                    <!-- PENDING VERIFICATION -> Opens Payment Verification -->
+                    <a href="payment-verification.html" class="kpi-card-custom kpi-pending" style="text-decoration:none; color:inherit; cursor:pointer;">
+                        <div class="kpi-info">
+                            <div class="kpi-title">PENDING VERIFICATION</div>
+                            <div class="kpi-value" id="kpiPending">0</div>
+                            <div class="kpi-foot">Waiting for approval</div>
+                        </div>
+                        <div class="kpi-icon-box"><span class="material-icons">schedule</span></div>
+                    </a>
+
+                    <!-- TOTAL DOWNPAYMENTS (50%) collected so far -> Clickable to open downpayments modal -->
+                    <div id="openDownpaymentsModalCard" role="button" tabindex="0" class="kpi-card-custom" style="border-left-color:#1e5138; background:linear-gradient(135deg,#fff 0%,#edf7f2 100%); text-decoration:none; color:inherit; cursor:pointer;">
+                        <div class="kpi-info">
+                            <div class="kpi-title">TOTAL DOWNPAYMENTS (50%)</div>
+                            <div class="kpi-value" id="kpiDownpayments">₱0</div>
+                            <div class="kpi-foot">Click to manage &amp; complete payments</div>
+                        </div>
+                        <div class="kpi-icon-box" style="background:#1e5138;"><span class="material-icons">account_balance_wallet</span></div>
+                    </div>
+
+                    <!-- TOTAL EARNED -> full amount only when both payments recorded -->
+                    <a href="reservation-history.html?status=approved" class="kpi-card-custom kpi-earnings" style="text-decoration:none; color:inherit; cursor:pointer;">
+                        <div class="kpi-info">
+                            <div class="kpi-title">TOTAL EARNED</div>
+                            <div class="kpi-value" id="kpiEarnings">₱0</div>
+                            <div class="kpi-foot">Downpayment + walk-in &amp; add-ons paid</div>
+                        </div>
+                        <div class="kpi-icon-box" style="background:#0077b6;"><span class="material-icons">payments</span></div>
+                    </a>
+                </div>
+
+                <!-- Monthly Line Graph Trend Container -->
+                <div class="admin-card" style="margin-top:24px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+                    <h2>Monthly Reservation Trend</h2>
+                    <p class="card-note">Accepted reservations per month (this year)</p>
+                    <div class="line-chart-container" id="monthlyChart">
+                        <!-- Populated dynamically as a line graph by dashboard.js -->
+                    </div>
+                </div>
+
+                <!-- Pending Approvals Data Table -->
+                <div class="admin-card" style="margin-top:24px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+                        <h2>Pending Reservation Approvals</h2>
+                        <a href="payment-verification.html" class="btn btn-sm btn-sky" style="border-radius:20px; font-weight:600;">Go to Payment Verification</a>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>REF</th>
+                                    <th>GUEST</th>
+                                    <th>VISIT DATE</th>
+                                    <th>PACKAGE</th>
+                                    <th>AMOUNT</th>
+                                    <th>BOOKED ON</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingBody">
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding:16px; color:var(--gray-400);">Loading pending bookings...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- TOTAL DOWNPAYMENTS LIST MODAL -->
+    <div class="dp-modal-overlay" id="downpaymentsListModal" role="dialog" aria-modal="true" aria-labelledby="dpModalTitle">
+        <div class="dp-modal-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
+                <div>
+                    <h3 id="dpModalTitle" style="margin:0; font-size:18px; color:var(--gray-900);">Registered Down Payments (50%)</h3>
+                    <p style="margin:4px 0 0; font-size:12px; color:var(--gray-600);">Click <strong>Completed</strong> once the customer settles their remaining balance and add-ons face-to-face at the resort.</p>
+                </div>
+                <button type="button" id="closeDownpaymentsModalBtn" aria-label="Close" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-600); line-height:1;">&times;</button>
+            </div>
+            <div style="overflow:auto; margin-top:14px; flex:1;">
+                <table class="admin-table" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>REF</th>
+                            <th>GUEST</th>
+                            <th>VISIT DATE</th>
+                            <th>DOWN PAYMENT (50%)</th>
+                            <th>ADD-ONS</th>
+                            <th>RESORT BALANCE</th>
+                            <th style="text-align:right;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="downpaymentsModalBody">
+                        <tr>
+                            <td colspan="7" style="text-align:center; padding:16px; color:var(--gray-400);">Loading down payments...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding-top:12px; border-top:1px solid var(--gray-200); display:flex; justify-content:flex-end;">
+                <button type="button" class="btn btn-gray btn-sm" id="ackDownpaymentsModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPLETE FULL PAYMENT & ADD-ON CONFIRMATION MODAL -->
+    <!-- COMPLETE FULL PAYMENT & ADD-ON CONFIRMATION MODAL -->
+    <div class="dp-modal-overlay" id="completePaymentModal" role="dialog" aria-modal="true" aria-labelledby="completePayTitle" style="z-index: 10000;">
+        <div class="dp-modal-box sm">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
+                <h3 id="completePayTitle" style="margin:0; font-size:17px; color:var(--gray-900);">Complete Full Payment</h3>
+                <button type="button" id="closeCompletePayModalBtn" aria-label="Close" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--gray-600); line-height:1;">&times;</button>
+            </div>
+            <div style="padding:14px 0; font-size:13px; color:var(--gray-700); line-height:1.6;">
+                <p style="margin:0 0 10px;">Confirm face-to-face payment settlement for <strong id="cpGuestName">--</strong> (<span id="cpRefCode">--</span>):</p>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:12px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                        <span>50% Package Down Payment (Paid):</span>
+                        <strong id="cpDownpayment">₱0</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                        <span>Remaining Package Balance:</span>
+                        <strong id="cpPkgBalance">₱0</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                        <span>LPG Add-on (+₱500):</span>
+                        <strong id="cpLpgFee">₱0</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; padding-top:6px; border-top:1px dashed #cbd5e1; font-size:14px; color:#1e5138;">
+                        <span>Total Full Amount to Earn:</span>
+                        <strong id="cpFinalTotal">₱0</strong>
+                    </div>
+                </div>
+                <div id="cpCancelLpgWrap" style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 12px;">
+                    <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer; font-size:12px; color:#92400e;">
+                        <input type="checkbox" id="cpRemoveLpgCheckbox" style="margin-top:2px; accent-color:#d97706;" />
+                        <span id="cpLpgToggleLabel"><strong>Remove LPG Add-on (-₱500)</strong> — Check this if the customer cancelled their LPG add-on face-to-face at the resort.</span>
+                    </label>
+                </div>
+            </div>
+            <div style="padding-top:12px; border-top:1px solid var(--gray-200); display:flex; justify-content:flex-end; gap:8px;">
+                <button type="button" class="btn btn-gray btn-sm" id="cancelCompletePayBtn">Cancel</button>
+                <button type="button" class="btn btn-sky btn-sm" id="confirmCompletePayBtn">Confirm Completed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared admin behavior loads first; dashboard.js then fills the live reservation summaries. -->
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/admin/admin-shared.js"></script>
+    <script src="../assets/js/admin/dashboard.js"></script>
+</body>
+
+</html>

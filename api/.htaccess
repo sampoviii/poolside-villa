@@ -1,0 +1,4 @@
+# Prevent web requests from reading the file that contains private mail credentials.
+<Files "mail-config.php">
+    Require all denied
+</Files>

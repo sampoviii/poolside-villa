@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa - User Management</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+
+<body class="admin-page">
+    <!-- This page lets the admin create and manage caretaker accounts. -->
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+                <div>
+                    <div class="admin-brand-sub" id="adminPanelLabel">Admin Panel</div>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+    <a href="dashboard.html"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+    <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+    <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+    <a href="reservation-history.html"><span class="material-icons nav-icon">list_alt</span> Reservation History</a>
+    <a href="reports.html"><span class="material-icons nav-icon">assessment</span> Reports</a>
+    <a href="reviews.html"><span class="material-icons nav-icon">star</span> Customer Reviews</a>
+    <a href="user-management.html"><span class="material-icons nav-icon">group</span> User Management</a>
+    <a href="audit-logs.html"><span class="material-icons nav-icon">history</span> Audit Logs</a>
+    <a href="settings.html"><span class="material-icons nav-icon">settings</span> Settings</a>
+</nav>
+
+            <div class="admin-nav-bottom">
+                <button type="button" id="adminLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+            </div>
+        </aside>
+
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+                <h1>User Management</h1>
+                <div class="admin-who">Signed in as <b id="adminNameLabel">Admin</b></div>
+            </div>
+
+            <div class="admin-body" style="max-width:960px; margin:0 auto;">
+
+                <!-- ===== Add Caretaker Account Form ===== -->
+                <form class="admin-card" id="addCaretakerForm" style="margin-bottom:24px;">
+                    <h2><span class="material-icons heading-icon">person_add</span> Add Caretaker Account</h2>
+                    <p class="card-note">Create staff credentials for caretaker panel access.</p>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="caretakerFirstName">First Name <span class="required">*</span></label>
+                            <input type="text" id="caretakerFirstName" class="form-input" placeholder="e.g. Kent" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="caretakerLastName">Last Name</label>
+                            <input type="text" id="caretakerLastName" class="form-input" placeholder="e.g. Lewis" />
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="caretakerEmail">Email Address <span class="required">*</span></label>
+                            <input type="email" id="caretakerEmail" class="form-input" placeholder="lewis@gmail.com" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="caretakerPhone">Phone Number</label>
+                            <input type="tel" id="caretakerPhone" class="form-input" placeholder="09632587412" />
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="caretakerPassword">Password <span class="required">*</span></label>
+                            <input type="password" id="caretakerPassword" class="form-input" placeholder="Set temporary password" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="caretakerConfirmPassword">Confirm Password <span class="required">*</span></label>
+                            <input type="password" id="caretakerConfirmPassword" class="form-input" placeholder="Re-enter password" required />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-sky btn-lg">Add Caretaker</button>
+                </form>
+
+                <!-- ===== Caretaker Accounts Table ===== -->
+                <div class="admin-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                        <h2><span class="material-icons heading-icon">group</span> Caretaker Accounts</h2>
+                        <button type="button" class="btn btn-sm btn-outline" id="refreshCaretakersBtn" style="border-radius:20px; border-color:#1e5138; color:#1e5138; font-weight:600;">
+                            &#8635; Refresh
+                        </button>
+                    </div>
+
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>NAME</th>
+                                    <th>EMAIL</th>
+                                    <th>PHONE</th>
+                                    <th>STATUS</th>
+                                    <th>DATE ADDED</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="caretakerTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding:16px; color:var(--gray-400);">
+                                        Loading caretaker accounts...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared helpers handle form feedback and confirmations before user-management.js runs. -->
+    <script src="../assets/js/password-toggle.js"></script>
+    <script src="../assets/js/live-validation.js"></script>
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/admin/admin-shared.js"></script>
+    <script src="../assets/js/admin/user-management.js"></script>
+</body>
+
+</html>

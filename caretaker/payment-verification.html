@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa — Payment Verification</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+
+<body class="caretaker-page">
+<!-- Caretakers use this screen to review payment proof and process reservations. -->
+<div class="admin-layout">
+
+    <aside class="admin-sidebar">
+        <div class="admin-brand">
+            <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+            <div>
+                <div class="admin-brand-sub">Caretaker Panel</div>
+            </div>
+        </div>
+        <nav class="admin-nav">
+            <a href="dashboard.html"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+            <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+            <a href="payment-verification.html" class="active"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+            <a href="reservations.html"><span class="material-icons nav-icon">list_alt</span> Reservations</a>
+        </nav>
+        <div class="admin-nav-bottom">
+            <button type="button" id="caretakerLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+        </div>
+    </aside>
+
+    <div class="admin-main">
+        <div class="admin-topbar">
+            <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+            <h1>Payment Verification</h1>
+            <div class="admin-who">Signed in as <b id="caretakerNameLabel">Caretaker</b></div>
+        </div>
+
+        <div class="admin-body">
+
+            <div class="admin-card">
+                <h2>Pending Reservations</h2>
+                <p class="card-note">
+                    Review each guest's GCash proof of payment. Accept or reject the
+                    reservation, and leave an optional message the customer will see in
+                    their notifications.
+                </p>
+            </div>
+
+            <!-- Verification cards built by JS -->
+            <div id="verifyList"></div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox — same as admin -->
+<div class="lightbox" id="lightbox">
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Close"><span class="material-icons" style="font-size:18px;vertical-align:middle;">close</span></button>
+    <figure class="lightbox-inner">
+        <img id="lightboxImg" src="" alt="Proof of payment" />
+    </figure>
+</div>
+
+<!-- Shared caretaker access loads before the payment-review interactions. -->
+<script src="../assets/js/action-confirm.js"></script>
+<script src="../assets/js/caretaker/caretaker-shared.js"></script>
+<script src="../assets/js/caretaker/payment-verification.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home | Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/home.css" />
+</head>
+<body id="accountPage">
+    <!-- This signed-in customer page shows resort details and customer review features. -->
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <a href="home.html" class="nav-logo">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="nav-logo-img" onerror="this.style.display='none';" />
+            </a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="home.html" class="active">Home</a>
+                <a href="booking.html">Book Reservation</a>
+                <a href="history.html">History</a>
+            <a href="review.html" id="reviewNavLink" style="display:none;">Review</a>
+            </div>
+            <div class="nav-account-area">
+                <div class="notif-wrap">
+                    <button type="button" class="notif-bell" id="notifBell" aria-label="Notifications">
+                        <span class="material-icons" style="font-size:20px;vertical-align:middle;">notifications</span>
+                        <span class="notif-dot" id="notifDot" style="display:none;"></span>
+                    </button>
+                </div>
+                <div class="account-wrap">
+                    <button type="button" class="account-btn" id="profileButton">
+                        <span class="account-avatar" id="profileButtonInitial">G</span>
+                        <span class="account-name" id="profileButtonName">Guest</span>
+                        <span class="account-caret"><span class="material-icons" style="font-size:18px;vertical-align:middle;">arrow_drop_down</span></span>
+                    </button>
+                    <div class="account-menu" id="profileMenu">
+                        <div class="account-menu-head">
+                            <div class="account-avatar large" id="profileMenuInitial">G</div>
+                            <div>
+                                <div class="account-menu-name" id="profileMenuName">Guest</div>
+                                <div class="account-menu-email" id="profileMenuEmail"></div>
+                            </div>
+                        </div>
+                        <a href="settings.html" class="account-menu-item" id="settingsMenuLink"><span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;">settings</span>Settings</a>
+                        <button type="button" class="account-menu-item logout" id="logoutButton"><span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:6px;">logout</span>Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="customer-home-hero">
+            <div class="customer-home-hero-content">
+                <span class="customer-home-eyebrow">Your private Laguna escape</span>
+                <h1 id="customerWelcome">Welcome Back to Poolside Villa</h1>
+                <p>Seven private bedrooms, two pools, and breathtaking views of Laguna de Bay. Your perfect group getaway awaits.</p>
+                <a href="booking.html" class="customer-home-book-link">Book Your Stay <span aria-hidden="true">→</span></a>
+                <a href="#customer-home-stay" class="customer-home-scroll-link">Explore the Villa <span aria-hidden="true">↓</span></a>
+            </div>
+            <div class="customer-home-hero-caption">More than a villa — it's yours for the weekend.</div>
+        </section>
+
+        <section class="customer-home-highlights" aria-label="Villa highlights">
+            <div class="page-wrap">
+                <div class="customer-home-highlights-inner">
+                    <div><strong>7</strong><span>Private Bedrooms</span></div>
+                    <div><strong>35</strong><span>Guests Welcome</span></div>
+                    <div><strong>2</strong><span>Pools to Enjoy</span></div>
+                    <div><strong>4.8★</strong><span>Guest Rating</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="customer-home-gallery" aria-labelledby="customer-home-gallery-title">
+            <div class="page-wrap">
+                <div class="customer-home-section-heading">
+                    <div>
+                        <span class="section-label">Take a look around</span>
+                        <h2 class="section-title" id="customer-home-gallery-title">A closer look at the villa</h2>
+                    </div>
+                    <div class="customer-home-gallery-controls">
+                        <span class="customer-home-gallery-count" id="customerHomeGalleryCount" aria-live="polite">01 / 54</span>
+                        <button type="button" class="customer-home-gallery-arrow" id="customerHomeGalleryPrev" aria-label="Previous resort photo"><span class="material-icons">arrow_back</span></button>
+                        <button type="button" class="customer-home-gallery-arrow" id="customerHomeGalleryNext" aria-label="Next resort photo"><span class="material-icons">arrow_forward</span></button>
+                    </div>
+                </div>
+                <div class="customer-home-gallery-track" id="customerHomeGalleryTrack" role="region" aria-label="Poolside Villa photo gallery" tabindex="0"></div>
+                <div class="customer-home-gallery-progress" aria-hidden="true">
+                    <span id="customerHomeGalleryProgress"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="customer-home-stay" id="customer-home-stay">
+            <div class="page-wrap">
+                <div class="customer-home-section-heading">
+                    <div>
+                        <span class="section-label">What Makes It Worth It</span>
+                        <h2 class="section-title">Make Yourself at Home</h2>
+                        <p style="margin-top:12px;">Two pools, stunning views, and everything you need for quality time together. Take a look around before you arrive.</p>
+                    </div>
+                </div>
+
+                <div class="customer-home-experience-grid">
+                    <article class="customer-home-experience customer-home-experience-featured">
+                        <img src="../assets/images/PoolSide%20Villa21.jpg" alt="A comfortable private bedroom at Poolside Villa" loading="lazy" />
+                        <div class="customer-home-experience-copy">
+                            <span class="customer-home-experience-kicker">Sleep Well</span>
+                            <h3>Seven Rooms, Total Comfort</h3>
+                            <p>Each air-conditioned bedroom comes with its own private bathroom. Choose a package that fits your group size perfectly.</p>
+                        </div>
+                    </article>
+                    <article class="customer-home-experience">
+                        <img src="../assets/images/Poolside%20Villa46.jpg" alt="Poolside Villa illuminated at night" loading="lazy" />
+                        <div class="customer-home-experience-copy">
+                            <span class="customer-home-experience-kicker">Two Pools</span>
+                            <h3>Pool Days & Warm Nights</h3>
+                            <p>Cool off in the Sukabumi pool during the day, then unwind in the hot spring pool after sunset.</p>
+                        </div>
+                    </article>
+                    <article class="customer-home-experience">
+                        <img src="../assets/images/PoolSide%20Villa54.jpg" alt="View of Laguna de Bay from the villa" loading="lazy" />
+                        <div class="customer-home-experience-copy">
+                            <span class="customer-home-experience-kicker">The View</span>
+                            <h3>Laguna de Bay & Mt. Makiling</h3>
+                            <p>Wake up to breathtaking views that stretch across the bay, with Mt. Makiling rising in the distance.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="customer-home-reviews" aria-labelledby="customer-home-reviews-title">
+            <div class="page-wrap">
+                <div class="customer-home-section-heading customer-home-reviews-heading">
+                    <div>
+                        <span class="section-label">What Guests Say</span>
+                        <h2 class="section-title" id="customer-home-reviews-title">Loved by Everyone Who Stays</h2>
+                        <p style="margin-top:12px;">Real reviews from guests who've made memories at Poolside Villa.</p>
+                    </div>
+                </div>
+                <div class="customer-home-review-grid" id="customerHomeReviews" aria-live="polite">
+                    <p class="customer-home-review-status" id="customerHomeReviewStatus">Loading guest reviews&hellip;</p>
+                </div>
+
+                <!-- My Review section — shown to logged-in customers -->
+                <div id="myReviewSection" style="display:none; margin-top:40px; border-top:1px solid var(--cream-line); padding-top:32px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                        <div>
+                            <span class="section-label">Your experience</span>
+                            <h3 style="font-size:20px; font-weight:700; color:var(--navy); margin:4px 0 0;">Your Review</h3>
+                        </div>
+                        <button type="button" id="writeReviewBtn" class="btn btn-sky btn-sm" style="display:none;">
+                            <span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:4px;">rate_review</span>Write a Review
+                        </button>
+                    </div>
+
+                    <!-- Shown when the customer has no review yet and no completed stay -->
+                    <p id="myReviewNoStay" style="display:none; font-size:13px; color:var(--gray-400);">
+                        <span class="material-icons" style="font-size:14px;vertical-align:middle;margin-right:4px;">schedule</span>
+                        Reviews are available after your first completed stay.
+                    </p>
+
+                    <!-- Shown when the customer has a review -->
+                    <div id="myReviewCard" style="display:none; background:var(--white); border:1.5px solid var(--cream-line); border-radius:var(--radius-lg); padding:20px; max-width:540px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                            <div id="myReviewStars" style="font-size:20px; color:#f59e0b;"></div>
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" id="editMyReviewBtn" class="btn btn-outline btn-sm">
+                                    <span class="material-icons" style="font-size:15px;vertical-align:middle;margin-right:3px;">edit</span>Edit
+                                </button>
+                                <button type="button" id="deleteMyReviewBtn" class="btn btn-red btn-sm">
+                                    <span class="material-icons" style="font-size:15px;vertical-align:middle;margin-right:3px;">delete</span>Delete
+                                </button>
+                            </div>
+                        </div>
+                        <p id="myReviewText" style="font-size:14px; color:var(--gray-800); font-style:italic; margin:0 0 10px; line-height:1.7;"></p>
+                        <div style="font-size:12px; color:var(--gray-400);">
+                            <span id="myReviewMeta"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Write / Edit Review Modal -->
+        <div class="modal-overlay" id="reviewModal" role="dialog" aria-modal="true">
+            <div class="modal-box" style="max-width:480px;">
+                <div class="modal-head">
+                    <h3 id="reviewModalTitle">
+                        <span class="material-icons" style="font-size:18px;vertical-align:middle;margin-right:4px;">rate_review</span>Write a Review
+                    </h3>
+                    <button type="button" class="modal-close-btn" id="reviewModalClose" aria-label="Close">
+                        <span class="material-icons" style="font-size:18px;vertical-align:middle;">close</span>
+                    </button>
+                </div>
+                <div class="modal-content">
+                    <form id="reviewForm" novalidate>
+                        <input type="hidden" id="reviewIdField" value="" />
+
+                        <div class="form-group">
+                            <label class="form-label" for="reviewName">Your Name <span class="required">*</span></label>
+                            <input type="text" id="reviewName" class="form-input" placeholder="Your full name" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reviewStay">Visit Type <span class="required">*</span></label>
+                            <select id="reviewStay" class="form-input" required>
+                                <option value="" disabled selected>Select visit type</option>
+                                <option value="Day Swim">Day Swim</option>
+                                <option value="Night Swim">Night Swim</option>
+                                <option value="Overnight Stay">Overnight Stay</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Rating <span class="required">*</span></label>
+                            <div class="review-star-picker" id="reviewStarPicker">
+                                <button type="button" class="review-star-btn" data-value="1" aria-label="1 star">★</button>
+                                <button type="button" class="review-star-btn" data-value="2" aria-label="2 stars">★</button>
+                                <button type="button" class="review-star-btn" data-value="3" aria-label="3 stars">★</button>
+                                <button type="button" class="review-star-btn" data-value="4" aria-label="4 stars">★</button>
+                                <button type="button" class="review-star-btn" data-value="5" aria-label="5 stars">★</button>
+                            </div>
+                            <input type="hidden" id="reviewRating" value="5" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reviewText">Your Review <span class="required">*</span></label>
+                            <textarea id="reviewText" class="form-input" style="min-height:100px;" placeholder="Share your experience at Poolside Villa..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-sky btn-lg btn-block" id="reviewSubmitBtn">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- QR Code Zoom Modal -->
+    <div class="qr-modal-overlay" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+        <div class="qr-modal-content">
+            <button type="button" class="qr-modal-close" id="qrModalClose" aria-label="Close">
+                <span class="material-icons" style="font-size:20px;">close</span>
+            </button>
+            <div class="qr-modal-header">
+                <h3 class="qr-modal-title" id="qrModalTitle">GCash QR Code</h3>
+                <p class="qr-modal-subtitle">Scan this code with your GCash app to make payment</p>
+            </div>
+            <div class="qr-modal-image-container">
+                <img id="qrModalImage" class="qr-modal-image" src="" alt="GCash QR Code" />
+            </div>
+            <div class="qr-modal-info">
+                <div class="qr-modal-info-icon">
+                    <span class="material-icons" style="font-size:20px;">account_balance_wallet</span>
+                </div>
+                <div class="qr-modal-info-text">
+                    <div class="qr-modal-info-label">GCash Number</div>
+                    <div class="qr-modal-info-value" id="qrModalNumber">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="customer-home-footer">
+        <div class="page-wrap">
+            <p>&copy; 2026 Poolside Villa · Your Private Laguna Escape · Protected under RA 10173 (Data Privacy Act of 2012)</p>
+        </div>
+    </footer>
+
+    <!-- Shared customer behavior loads before home.js fills review content and interactions. -->
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/customer/shared.js"></script>
+    <script src="../assets/js/customer/home.js"></script>
+</body>
+</html>
+
+

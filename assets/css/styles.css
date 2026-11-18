@@ -1,0 +1,16 @@
+/* ============================================================
+   styles.css
+   This file is just an importer.
+   The real styles are split into 4 smaller files so they are
+   easier to read and find things in.
+
+   styles-base.css    — colors, reset, buttons, badges, toast
+   styles-layout.css  — nav, hero, gallery, reviews, footer
+   styles-booking.css — calendar, forms, modals, booking page
+   styles-account.css — notifications, history, login page
+   ============================================================ */
+
+@import url('styles-base.css');
+@import url('styles-layout.css');
+@import url('styles-booking.css');
+@import url('styles-account.css');

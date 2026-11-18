@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+
+<!-- admin-page = requires admin login (see admin-shared.js) -->
+<body class="admin-page">
+    <!-- This page lets the admin read customer reviews and manage replies. -->
+    <div class="admin-layout">
+
+        <!-- ===== LEFT SIDEBAR ===== -->
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" onerror="this.style.display='none';" />
+                <div>
+                    <div class="admin-brand-sub" id="adminPanelLabel">Admin Panel</div>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+    <a href="dashboard.html"><span class="material-icons nav-icon">dashboard</span> Dashboard</a>
+    <a href="available-dates.html"><span class="material-icons nav-icon">event_available</span> Available Dates</a>
+    <a href="payment-verification.html"><span class="material-icons nav-icon">payment</span> Payment Verification</a>
+    <a href="reservation-history.html"><span class="material-icons nav-icon">list_alt</span> Reservation History</a>
+    <a href="reports.html"><span class="material-icons nav-icon">assessment</span> Reports</a>
+    <a href="reviews.html"><span class="material-icons nav-icon">star</span> Customer Reviews</a>
+    <a href="user-management.html"><span class="material-icons nav-icon">group</span> User Management</a>
+    <a href="audit-logs.html"><span class="material-icons nav-icon">history</span> Audit Logs</a>
+    <a href="settings.html"><span class="material-icons nav-icon">settings</span> Settings</a>
+</nav>
+
+            <div class="admin-nav-bottom">
+                <button type="button" id="adminLogout"><span class="material-icons nav-icon">logout</span> Logout</button>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <button type="button" class="admin-menu-toggle" id="sidebarToggle"><span class="material-icons topbar-icon">menu</span></button>
+                <h1>Customer Reviews</h1>
+                <div class="admin-who">Signed in as <b id="adminNameLabel">Admin</b></div>
+            </div>
+
+            <div class="admin-body">
+
+                <!-- Summary stats -->
+                <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 32px;">
+                    <div class="kpi-card teal">
+                        <div class="kpi-label">Total Reviews</div>
+                        <div class="kpi-value" id="totalReviews">0</div>
+                        <div class="kpi-foot">All customer reviews</div>
+                    </div>
+                    <div class="kpi-card yellow">
+                        <div class="kpi-label">Average Rating</div>
+                        <div class="kpi-value" id="avgRating">0.0</div>
+                        <div class="kpi-foot">Out of 5 stars</div>
+                    </div>
+                </div>
+
+                <!-- Reviews list -->
+                <div class="admin-card">
+                    <div style="margin-bottom: 20px;">
+                        <h2>All Customer Reviews</h2>
+                        <p class="card-note">View all reviews submitted by customers about their stay experience.</p>
+                    </div>
+
+                    <!-- Filter controls -->
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <input type="text" id="searchInput" placeholder="Search by name, review text..." 
+                                   class="form-input" style="width: 100%;" />
+                        </div>
+                        <div>
+                            <select id="ratingFilter" class="form-input">
+                                <option value="">All Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="stayFilter" class="form-input">
+                                <option value="">All Visits</option>
+                                <option value="Day Swim">Day Swim</option>
+                                <option value="Night Swim">Night Swim</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="reviewsList" class="reviews-list-container">
+                        <!-- Filled by reviews.js -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEW DETAIL MODAL -->
+    <div id="reviewDetailModal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box" style="max-width: 600px;">
+            <div class="modal-head">
+                <h3>Review Details</h3>
+                <button class="modal-close-btn" data-close aria-label="Close"><span class="material-icons" style="font-size:18px;vertical-align:middle;">close</span></button>
+            </div>
+            <div class="modal-content" id="reviewDetailBody">
+                <!-- Filled by reviews.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared admin behavior loads before reviews.js fetches and displays review records. -->
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/admin/admin-shared.js"></script>
+    <script src="../assets/js/admin/reviews.js"></script>
+</body>
+
+</html>

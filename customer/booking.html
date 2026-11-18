@@ -1,0 +1,709 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poolside Villa</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/images/favicon.png" />
+    <link rel="stylesheet" href="../assets/css/styles-base.css" />
+    <link rel="stylesheet" href="../assets/css/styles-layout.css" />
+    <link rel="stylesheet" href="../assets/css/styles-booking.css" />
+    <link rel="stylesheet" href="../assets/css/styles-account.css" />
+    <style>
+        .clock-arrow {
+            width: 40px;
+            height: 36px;
+            border: 1px solid #b9d8c6;
+            border-radius: 8px;
+            background: #e8f3ec;
+            color: #234b36;
+            font-size: 23px;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .clock-arrow:hover,
+        .clock-arrow:focus-visible {
+            background: #d3e9db;
+            color: #173a28;
+            outline: 2px solid #2d6a4f;
+            outline-offset: 1px;
+        }
+        .clock-arrow .material-icons {
+            font-size: 30px;
+            font-weight: 900;
+        }
+    </style>
+</head>
+
+<body id="accountPage">
+    <!-- Signed-in customers use this page to choose dates, a package, and payment details. -->
+
+    <!-- NAV -->
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <a href="home.html" class="nav-logo">
+                <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="nav-logo-img" onerror="this.style.display='none';" />
+            </a>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+            <div class="nav-links" id="navLinks">
+                <a href="home.html">Home</a>
+                <a href="booking.html" class="active">Book Reservation</a>
+                <a href="history.html">History</a>
+                <a href="review.html" id="reviewNavLink" style="display:none;">Review</a>
+            </div>
+            <div class="nav-account-area">
+                <div class="notif-wrap">
+                    <button type="button" class="notif-bell" id="notifBell" aria-label="Notifications">
+                    <span class="material-icons" style="font-size:20px;vertical-align:middle;" aria-hidden="true">notifications</span>
+                    <span class="notif-dot" id="notifDot" style="display:none;"></span>
+                </button>
+                </div>
+                <div class="account-wrap">
+                    <button type="button" class="account-btn" id="profileButton">
+                    <span class="account-avatar" id="profileButtonInitial">G</span>
+                    <span class="account-name" id="profileButtonName">Guest</span>
+                    <span class="account-caret" aria-hidden="true"></span>
+                </button>
+                    <div class="account-menu" id="profileMenu">
+                        <div class="account-menu-head">
+                            <div class="account-avatar large" id="profileMenuInitial">G</div>
+                            <div>
+                                <div class="account-menu-name" id="profileMenuName">Guest</div>
+                                <div class="account-menu-email" id="profileMenuEmail"></div>
+                            </div>
+                        </div>
+                        <a href="settings.html" class="account-menu-item" id="settingsMenuLink">Settings</a>
+                        <button type="button" class="account-menu-item logout" id="logoutButton">Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="booking-hero">
+        <h1>Book Your Reservation</h1>
+        <p>Fill in the details below to reserve your visit to Poolside Villa.</p>
+        <!-- Step indicator -->
+        <div class="booking-step-indicator">
+            <div class="step-item active" data-step="1">
+                <div class="step-circle">1</div>
+                <span>Date &amp; Package</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step-item" data-step="2">
+                <div class="step-circle">2</div>
+                <span>Guest &amp; Payment</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOKING BODY -->
+    <div class="booking-body">
+        <div class="page-wrap">
+            <div class="booking-layout">
+
+                <!-- ============ MAIN FORM COLUMN ============ -->
+                <div class="booking-form-col">
+
+                    <!-- ===== STEP 1 ===== -->
+                    <div id="bookingStep1">
+
+                        <!-- Visit Date -->
+                        <div class="form-section">
+                            <div class="form-section-header">
+                                <div class="form-section-icon"><span class="material-icons" aria-hidden="true">calendar_month</span></div>
+                                <div>
+                                    <h3>Visit Date</h3>
+                                    <p>Pick an available date for your visit</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="date-legend">
+                                    <span><span class="legend-dot available"></span> Available</span>
+                                    <span><span class="legend-dot partial"></span> Partially Available</span>
+                                    <span><span class="legend-dot reserved"></span> Fully Booked</span>
+                                    <span><span class="legend-dot being-chosen"></span> Being Chosen</span>
+                                    <span><span class="legend-dot chosen"></span> Your Pick</span>
+                                </div>
+                                <p style="font-size:11px; color:var(--gray-400); margin:8px 0 0;">
+                                    Dates show the earliest time you can check in.
+                                </p>
+                            </div>
+
+                            <div class="book-cal">
+                                <div class="cal-nav">
+                                    <span id="calendarTitle">This Month</span>
+                                    <div class="cal-selects">
+                                        <select id="calMonth" class="cal-select" aria-label="Month"></select>
+                                        <select id="calYear" class="cal-select" aria-label="Year"></select>
+                                    </div>
+                                </div>
+                                <div class="cal-grid" id="calendarGrid"></div>
+                            </div>
+                            <!-- Bug 7 fix: shown when no open dates exist in the current month -->
+                            <p id="calNoDateMsg" style="display:none;margin-top:10px;font-size:13px;color:var(--red);font-weight:600;text-align:center;"></p>
+                            <input type="hidden" id="visitDate" name="visitDate" />
+                            <span class="form-hint" id="chosenDateHint">No date selected yet.</span>
+                        </div>
+
+                        <!-- Visit Time -->
+                        <div class="form-section">
+                            <div class="form-section-header">
+                                <div class="form-section-icon"><span class="material-icons" aria-hidden="true">schedule</span></div>
+                                <div>
+                                    <h3>Visit Time</h3>
+                                    <p>Pick your check-in time. Same-day bookings require at least 3 hours' notice. Check-out is automatic (+22 hours).</p>
+                                </div>
+                            </div>
+
+                            <!-- Hidden field storing the final time value sent to PHP -->
+                            <input type="hidden" id="visitTime" name="visitTime" />
+
+                            <!-- Shown before a date is chosen -->
+                            <p id="slotNodateMsg" style="font-size:13px; color:var(--gray-400); margin:0;">
+                                Please select a date first.
+                            </p>
+
+                            <!-- Clock picker — shown after a date is chosen -->
+                            <div id="timePickerBox" style="display:none;">
+
+                                <label class="form-label">Check-in Time <span class="required">*</span></label>
+
+                                <!-- The clock card -->
+                                <div class="clock-picker">
+
+                                    <!-- Hour input -->
+                                    <div class="clock-col">
+                                        <button type="button" class="clock-arrow" id="hourUp" aria-label="Increase hour"><span class="material-icons" aria-hidden="true">arrow_drop_up</span></button>
+                                        <input type="number" id="clockHour" class="clock-digit" min="1" max="12" value="12" />
+                                        <button type="button" class="clock-arrow" id="hourDown" aria-label="Decrease hour"><span class="material-icons" aria-hidden="true">arrow_drop_down</span></button>
+                                        <span class="clock-lbl">Hour</span>
+                                    </div>
+
+                                    <div class="clock-sep">:</div>
+
+                                    <!-- Minute -->
+                                    <div class="clock-col">
+                                        <button type="button" class="clock-arrow" id="minUp" aria-label="Increase minute"><span class="material-icons" aria-hidden="true">arrow_drop_up</span></button>
+                                        <input type="text" id="clockMin" class="clock-digit" inputmode="numeric" maxlength="2" pattern="[0-5]?[0-9]" value="00" aria-label="Minute (00 to 59)" />
+                                        <button type="button" class="clock-arrow" id="minDown" aria-label="Decrease minute"><span class="material-icons" aria-hidden="true">arrow_drop_down</span></button>
+                                        <span class="clock-lbl">Minute</span>
+                                    </div>
+
+                                    <!-- AM / PM toggle -->
+                                    <div class="clock-ampm">
+                                        <button type="button" class="clock-ampm-btn active" id="btnAM">AM</button>
+                                        <button type="button" class="clock-ampm-btn" id="btnPM">PM</button>
+                                    </div>
+
+                                </div>
+
+                                <!-- Availability hint (only shows if fully booked) -->
+                                <p class="form-hint" id="checkinHint" style="margin-top:8px;"></p>
+
+                                <!-- Selected check-in display (auto-shown) -->
+                                <div id="clockSelectedDisplay" style="display:none; margin-top:10px;">
+                                    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                                        <div style="font-size:13px; color:var(--gray-600);">Check-in:</div>
+                                        <div id="clockSelectedLabel" style="font-size:16px; font-weight:800; color:var(--navy);"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Auto check-out display -->
+                                <div id="checkoutDisplay" style="display:none; margin-top:12px;">
+                                    <div class="checkout-box">
+                                        <div class="checkout-box-label">Check-out Time (automatic)</div>
+                                        <div class="checkout-box-value" id="checkoutValue">--</div>
+                                        <div class="checkout-box-note">Exactly 22 hours after check-in</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Package -->
+                        <div class="form-section">
+                            <div class="form-section-header">
+                                <div class="form-section-icon"><span class="material-icons" aria-hidden="true">bed</span></div>
+                                <div>
+                                    <h3>Package</h3>
+                                    <p>Select based on your group size</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="packageChoice">Package <span class="required">*</span></label>
+                                <select id="packageChoice" name="packageChoice" class="form-input" required>
+                                <option value="" disabled selected>-- Select a package --</option>
+                                <option value="1-10">1&ndash;10 pax &middot; 2 Rooms</option>
+                                <option value="11-15">11&ndash;15 pax &middot; 3 Rooms</option>
+                                <option value="16-20">16&ndash;20 pax &middot; 4 Rooms</option>
+                                <option value="21-25">21&ndash;25 pax &middot; 5 Rooms</option>
+                                <option value="26-30">26&ndash;30 pax &middot; 6 Rooms</option>
+                                <option value="31-35">31&ndash;35 pax &middot; 7 Rooms</option>
+                            </select>
+                            </div>
+
+                            <!-- Rate tables -->
+                            <div class="rates-ref">
+                                <div class="rates-ref-col">
+                                    <div class="rate-table-title">Weekdays (Mon&ndash;Thu)</div>
+                                    <table class="rate-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Guests</th>
+                                                <th>Package</th>
+                                                <th>Rate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1&ndash;10 pax</td>
+                                                <td>2 Rooms</td>
+                                                <td>&#8369;9,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>11&ndash;15 pax</td>
+                                                <td>3 Rooms</td>
+                                                <td>&#8369;13,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>16&ndash;20 pax</td>
+                                                <td>4 Rooms</td>
+                                                <td>&#8369;17,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>21&ndash;25 pax</td>
+                                                <td>5 Rooms</td>
+                                                <td>&#8369;21,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>26&ndash;30 pax</td>
+                                                <td>6 Rooms</td>
+                                                <td>&#8369;24,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>31&ndash;35 pax</td>
+                                                <td>7 Rooms</td>
+                                                <td>&#8369;27,000</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="rates-ref-col">
+                                    <div class="rate-table-title">Weekends &amp; Holidays (Fri&ndash;Sun)</div>
+                                    <table class="rate-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Guests</th>
+                                                <th>Package</th>
+                                                <th>Rate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1&ndash;10 pax</td>
+                                                <td>2 Rooms</td>
+                                                <td>&#8369;12,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>11&ndash;15 pax</td>
+                                                <td>3 Rooms</td>
+                                                <td>&#8369;17,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>16&ndash;20 pax</td>
+                                                <td>4 Rooms</td>
+                                                <td>&#8369;22,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>21&ndash;25 pax</td>
+                                                <td>5 Rooms</td>
+                                                <td>&#8369;27,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>26&ndash;30 pax</td>
+                                                <td>6 Rooms</td>
+                                                <td>&#8369;31,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td>31&ndash;35 pax</td>
+                                                <td>7 Rooms</td>
+                                                <td>&#8369;35,000</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- LPG add-on -->
+                            <div class="form-group">
+                                <label class="lpg-option">
+                                <input type="checkbox" id="addLpg" name="addLpg" />
+                                <span>Add LPG (gas) for cooking &nbsp;<b>+&#8369;500</b> <em>(optional &mdash; paid upon check-in at the resort)</em></span>
+                            </label>
+                            </div>
+
+                            <div class="info-banner">
+                                <span><strong>Tip:</strong> Weekend slots fill up fast. Book at least 3&ndash;5 days ahead.</span>
+                            </div>
+
+                            <!-- Room Showcase — shown after a package is selected -->
+                            <div id="roomShowcase" style="display:none;">
+                                <div class="room-showcase-header">
+                                    <div>
+                                        <h4 class="room-showcase-title">Your Included Rooms</h4>
+                                        <p class="room-showcase-sub" id="roomShowcaseSub">Tap any photo to enlarge.</p>
+                                    </div>
+                                </div>
+                                <div class="room-showcase-grid" id="roomShowcaseGrid"></div>
+                            </div>
+
+                        </div>
+
+                        <button type="button" id="proceedToStep2" class="btn btn-sky btn-lg btn-block">
+                        Proceed to Guest &amp; Payment <span class="material-icons" aria-hidden="true" style="font-size:18px;vertical-align:middle;margin-left:4px;">arrow_forward</span>
+                    </button>
+
+                    </div>
+                    <!-- ===== END STEP 1 ===== -->
+
+                    <!-- ===== STEP 2 ===== -->
+                    <div id="bookingStep2" style="display:none;">
+                        <form id="bookingForm" novalidate>
+
+                            <!-- Guest Info -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <div>
+                                        <h3>Guest Information</h3>
+                                        <p>Primary guest making the reservation</p>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="firstName">First Name <span class="required">*</span></label>
+                                        <input type="text" id="firstName" name="firstName" class="form-input" placeholder="Juan" required autocomplete="given-name" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="lastName">Last Name <span class="required">*</span></label>
+                                        <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Dela Cruz" required autocomplete="family-name" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                                        <input type="email" id="email" name="email" class="form-input" placeholder="sample@email.com" required autocomplete="email" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
+                                        <input type="tel" id="phone" name="phone" class="form-input" placeholder="09123456789" required autocomplete="tel" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <div>
+                                        <h3>Payment Details</h3>
+                                        <p>Pay via GCash and upload your proof</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <span class="form-hint" style="margin-top:6px; display:block;">
+                                    A 50% down payment on the package is required before your booking can proceed. The remaining package balance and any selected LPG add-on fee are due upon check-in at the resort.
+                                </span>
+                                </div>
+
+                                <div class="pay-info-box">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                        <strong style="font-size:14px;">Payment via GCash</strong>
+                                    </div>
+                                    <div class="pay-method-row">
+                                        <div style="flex:1;">
+                                            <div class="pay-method-label">GCash Number</div>
+                                            <!-- Filled by applyGcashSettings() from the admin's saved settings -->
+                                            <div class="pay-method-value" id="gcashNumber">Loading...</div>
+                                        </div>
+                                        <button type="button" class="btn btn-gray btn-sm" id="copyGcashBtn">Copy</button>
+                                    </div>
+                                    <div style="display:flex; align-items:center; gap:16px; margin-top:14px; padding-top:14px; border-top:1px solid var(--cream-line);">
+                                        <!-- QR image is filled by applyGcashSettings() — shows whatever the admin uploaded -->
+                                        <div class="qr-box" id="gcashQrBox" role="button" tabindex="0" aria-label="Enlarge GCash QR code" aria-haspopup="dialog">
+                                            <span style="font-size:11px; color:var(--gray-400); text-align:center; line-height:1.4;">QR not yet<br>uploaded</span>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight:700; font-size:14px; margin-bottom:4px;">GCash QR Code</div>
+                                            <p style="font-size:13px; font-weight:700; line-height:1.5; margin:0; padding:8px 10px; color:#234b36; background:#e8f3ec; border-left:3px solid #2d6a4f; border-radius:4px;">
+                                                Tap the QR code to enlarge it, then scan with your GCash app.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Proof of Payment <span class="required">*</span></label>
+                                    <div id="paymentDropzone" class="dropzone" role="button" tabindex="0" aria-label="Upload proof of payment">
+                                        <div class="dropzone-title">Upload your screenshot</div>
+                                        <div class="dropzone-sub">or <strong style="color:#2d6a4f;">click to browse</strong> &middot; Image only &middot; Max 5MB</div>
+                                    </div>
+                                    <input type="file" id="paymentFile" name="paymentFile" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" />
+                                    <div id="uploadPreview" class="upload-preview"></div>
+                                    <span class="form-hint">Upload a clear screenshot of your GCash transfer confirmation.</span>
+                                </div>
+                            </div>
+
+                            <!-- Rules -->
+                            <div class="form-section">
+                                <h3 style="font-size:15px; font-weight:700; color:#1a3d2b; margin-bottom:10px;">
+                                    Payment &amp; Cancellation Rules
+                                </h3>
+                                <ul style="font-size:13px; color:#475569; line-height:1.9; margin:0 0 16px 18px;">
+                                    <li>Payment is via GCash only. Slot confirmed once payment is verified.</li>
+                                    <li>Down payments are non-refundable but may be used to reschedule once.</li>
+                                    <li>Cancellation 7+ days before visit: full refund.</li>
+                                    <li>Cancellation 3&ndash;6 days before: 50% refund of down payment.</li>
+                                    <li>Cancellation under 3 days: no refund, one free reschedule allowed.</li>
+                                    <li>Bad weather or force majeure: full refund or free rescheduling.</li>
+                                </ul>
+                                <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
+                                <input type="checkbox" id="agreeRules" name="agreeRules"
+                                       required style="width:17px; height:17px; margin-top:2px; accent-color:#2d6a4f; flex-shrink:0;" />
+                                <span style="font-size:13px; color:#475569; line-height:1.7;">
+                                    I agree to the Terms and Conditions: A 50% package down payment is required before the booking can proceed and be confirmed. Remaining balance and optional add-ons are payable at the resort.
+                                </span>
+                            </label>
+                            </div>
+
+                            <div style="display:flex; gap:12px; margin-bottom:40px; flex-wrap:wrap;">
+                                <button type="button" id="backToStep1" class="btn btn-outline btn-lg">Back</button>
+                                <button type="submit" class="btn btn-sky btn-lg" style="flex:1;">Submit Reservation</button>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!-- ===== END STEP 2 ===== -->
+
+                </div>
+                <!-- ============ END MAIN FORM COLUMN ============ -->
+
+                <!-- ============ SIDEBAR ============ -->
+                <div class="sidebar-sticky">
+
+                    <!-- Price Summary -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-card-head">
+                            <h3>Price Summary</h3>
+                            <p>Updates as you fill the form</p>
+                        </div>
+                        <div class="sidebar-card-body">
+                            <div class="price-box">
+                                <div class="price-row">
+                                    <span>Rate Type</span>
+                                    <span id="calcRateType" style="font-weight:600;">--</span>
+                                </div>
+                                <div class="price-row">
+                                    <span id="calcPackageLabel">Package (select one)</span>
+                                    <span id="calcPackageCost" style="font-weight:600;">--</span>
+                                </div>
+                                <div class="price-row">
+                                    <span>LPG Add-on</span>
+                                    <span id="calcLpgCost" style="font-weight:600;">--</span>
+                                </div>
+                                <div class="price-row total">
+                                    <span>Total Amount</span>
+                                    <span id="calcSubtotal">--</span>
+                                </div>
+                                <div class="price-due">
+                                    <div>
+                                        <div class="price-due-label">Amount Due</div>
+                                        <div id="calcMode" class="price-due-mode">50% Package Down Payment</div>
+                                    </div>
+                                    <div id="calcDue" class="price-due-amount">--</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What Happens Next -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-card-head">
+                            <h3>What Happens Next</h3>
+                        </div>
+                        <div class="sidebar-card-body">
+                            <div class="next-steps">
+                                <div class="next-step-item">
+                                    <div class="step-circle">1</div>
+                                    <p>Submit this form with your GCash proof of payment.</p>
+                                </div>
+                                <div class="next-step-item">
+                                    <div class="step-circle">2</div>
+                                    <p>Our management verifies your payment within <strong>2&ndash;4 hours</strong>.</p>
+                                </div>
+                                <div class="next-step-item">
+                                    <div class="step-circle">3</div>
+                                    <p>Receive a <strong>confirmation notification</strong> in your account and by email.</p>
+                                </div>
+                                <div class="next-step-item">
+                                    <div class="step-circle">4</div>
+                                    <p>Show your confirmation on visit day. Enjoy!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- ============ END SIDEBAR ============ -->
+
+            </div>
+        </div>
+    </div>
+
+    <!-- AGREEMENT MODAL -->
+    <div id="agreementModal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3>One Last Step</h3>
+                <button type="button" class="modal-close-btn" data-close aria-label="Close">
+                    <span class="material-icons" aria-hidden="true">close</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="agreement-text">
+                    <h4>Agreement &amp; Data Privacy Consent</h4>
+                    <p>By continuing, I confirm that I have read and agree to Poolside Villa's Rules &amp; Policies and Cancellation Policy, and I consent to the collection and processing of my personal information in accordance with Republic Act 10173 (Data
+                        Privacy Act of 2012).</p>
+                    <p>My information will only be used to process and confirm this reservation and will be kept secure by the resort.</p>
+                </div>
+                <label class="agreement-consent">
+                <input type="checkbox" id="agreePrivacy" />
+                <span>I have read and agree to Poolside Villa's Rules &amp; Policies, Cancellation Policy, and Data Privacy consent.</span>
+            </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gray btn-sm" data-close>Cancel</button>
+                <button type="button" id="confirmAgreementBtn" class="btn btn-sky btn-sm">Agree &amp; Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GCash QR LIGHTBOX -->
+    <div class="qr-modal-overlay" id="gcashQrLightbox" role="dialog" aria-modal="true" aria-label="Enlarged GCash QR code">
+        <div class="qr-modal-content">
+            <button type="button" class="qr-modal-close" id="gcashQrLightboxClose" aria-label="Close">
+            <span class="material-icons" aria-hidden="true">close</span>
+        </button>
+            <div class="qr-modal-header">
+                <h3 class="qr-modal-title">GCash QR Code</h3>
+                <p class="qr-modal-subtitle">Scan this code with your GCash app to make payment</p>
+            </div>
+            <div class="qr-modal-image-container">
+                <img id="expandedGcashQr" class="qr-modal-image" src="" alt="GCash payment QR code" />
+            </div>
+            <div class="qr-modal-info">
+                <div class="qr-modal-info-text">
+                    <div class="qr-modal-info-label">GCash Number</div>
+                    <div class="qr-modal-info-value" id="expandedGcashNumber">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-head" style="border-bottom:none; padding-bottom:0;">
+                <span></span>
+                <button type="button" class="modal-close-btn" data-close aria-label="Close">
+                    <span class="material-icons" aria-hidden="true">close</span>
+                </button>
+            </div>
+            <div class="modal-content" style="text-align:center; padding-top:8px;">
+                <div class="success-icon" aria-hidden="true">
+                    <span class="material-icons">check</span>
+                </div>
+                <h2 style="font-size:20px; margin-bottom:6px;">Reservation Submitted!</h2>
+                <p style="font-size:13px; color:#635d53; max-width:360px; margin:0 auto 12px; line-height:1.7;">
+                    Your booking request has been received. Our team will verify your payment and notify you shortly.
+                </p>
+                <div class="booking-ref-box" id="bookingRefCode">BK-XXXXXXX</div>
+                <div style="background:#f5f3ee; border:1px solid #ddd8cc; border-radius:8px; padding:16px; text-align:left; margin:14px 0;">
+                    <div style="font-size:13px; font-weight:700; margin-bottom:10px;">Booking Summary</div>
+                    <table style="width:100%; font-size:12px; border-collapse:collapse;">
+                        <tr>
+                            <td style="padding:4px 0; color:#958f84; width:45%;">Guest Name</td>
+                            <td style="font-weight:600;"><span id="receipt_firstName">--</span> <span id="receipt_lastName"></span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px 0; color:#958f84;">Visit Date</td>
+                            <td style="font-weight:600;" id="receipt_visitDate">--</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px 0; color:#958f84;">Time</td>
+                            <td style="font-weight:600;" id="receipt_visitTime">--</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px 0; color:#958f84;">Pax</td>
+                            <td style="font-weight:600;" id="receipt_pax">--</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px 0; color:#958f84;">Package</td>
+                            <td style="font-weight:600;" id="receipt_package">--</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:4px 0; color:#958f84;">LPG Add-on</td>
+                            <td style="font-weight:600;" id="receipt_lpg">--</td>
+                        </tr>
+                        <tr style="border-top:1.5px solid #ddd8cc;">
+                            <td style="padding:6px 0 3px; font-weight:700;">Amount Due</td>
+                            <td style="font-weight:800; font-size:15px; color:#1a3d2b;" id="receipt_amount">--</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                    <a href="history.html" class="btn btn-sky btn-sm">View My History</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background:var(--navy); border-top:1px solid rgba(255,255,255,0.08); padding:22px 16px; text-align:center;">
+        <img src="../assets/images/logo.png" alt="Poolside Villa Logo" class="footer-logo" style="margin:0 auto 10px;" onerror="this.style.display='none';" />
+        <p style="font-size:12px; color:rgba(255,255,255,0.5);">
+            &copy; 2026 Poolside Villa &nbsp;&middot;&nbsp; Protected under RA 10173 (Data Privacy Act of 2012)
+        </p>
+    </footer>
+
+    <!-- Room Photo Lightbox -->
+    <div id="roomLightbox" class="room-lightbox" role="dialog" aria-modal="true" aria-label="Room photo viewer" style="display:none;">
+        <button type="button" class="room-lightbox-close" id="roomLightboxClose" aria-label="Close">
+            <span class="material-icons" aria-hidden="true">close</span>
+        </button>
+        <button class="room-lightbox-prev" id="roomLightboxPrev" aria-label="Previous photo">Previous</button>
+        <div class="room-lightbox-img-wrap">
+            <img id="roomLightboxImg" src="" alt="Room photo" />
+            <div class="room-lightbox-caption" id="roomLightboxCaption"></div>
+        </div>
+        <button class="room-lightbox-next" id="roomLightboxNext" aria-label="Next photo">Next</button>
+    </div>
+
+    <!-- Shared scripts validate inputs and confirmations before booking.js handles the booking flow. -->
+    <script src="../assets/js/live-validation.js"></script>
+    <script src="../assets/js/action-confirm.js"></script>
+    <script src="../assets/js/customer/shared.js"></script>
+    <script src="../assets/js/customer/booking.js"></script>
+</body>
+
+</html>
